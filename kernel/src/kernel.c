@@ -1,6 +1,6 @@
 #include "../include/kernel.h"
 
 int main(int argc, char* argv[]) {
-    decir_hola("Kernel");
+    prueba_de_shared("Soy el kernel");
     return 0;
 }

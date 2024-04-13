@@ -1,6 +1,6 @@
 #include "../include/memoria.h"
 
 int main(int argc, char* argv[]) {
-    decir_hola("Memoria");
+    prueba_de_shared("Soy la memoria");
     return 0;
 }

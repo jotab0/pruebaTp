@@ -1,6 +1,12 @@
 #include "../include/memoria.h"
 
+// SERVIDOR DE: CPU, KERNEL, ENTRADASALIDA
+// CLIENTE DE: - 
+
+
 int main(int argc, char* argv[]) {
-    prueba_de_shared("Soy la memoria");
+    
+    //int fd_kernel = iniciar_servidor()
+
     return 0;
 }

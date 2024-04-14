@@ -3,9 +3,8 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <commons/log.h> // de esta manera agregamos librerías de las commons
-
-void prueba_de_shared(char* mensaje);
+#include <commons/log.h> 
+#include <commons/config.h>  // de esta manera agregamos librerías de las commons
 
 
 #endif

@@ -13,11 +13,11 @@ int main(int argc, char* argv[]) {
 
     es_logger_extra = log_create("EntradaSalida_extra_log.log", "ES_extra_log", true, LOG_LEVEL_TRACE);
     if (es_logger_extra == NULL){
-        perror ("No se pudo crear log extra para la memoria");
+        perror ("No se pudo crear log extra para el módulo E/S");
         exit(EXIT_FAILURE);
     }
 
-    es_config = config_create("ES.config");
+    es_config = config_create(path_config_ES);
 
 	if (es_config == NULL) {
         perror ("No se pudo crear el config para el módulo E/S");

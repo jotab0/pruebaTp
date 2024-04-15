@@ -11,6 +11,8 @@ t_log* cpu_logger_extra;
 
 t_config* cpu_config;
 
+char* path_config_CPU = "/home/utnso/Documents/tp-2024-1c-ubuntunel/cpu/CPU.config";
+
 // Variables de config
 char* IP_MEMORIA;
 char* PUERTO_MEMORIA;

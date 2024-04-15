@@ -11,6 +11,8 @@ t_log* es_logger_extra;
 
 t_config* es_config;
 
+char* path_config_ES= "/home/utnso/Documents/tp-2024-1c-ubuntunel/entradasalida/ES.config";
+
 // Variables de config
 char* TIPO_INTERFAZ;
 int TIEMPO_UNIDAD_TRABAJO;

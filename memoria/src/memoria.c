@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
     
     memoria_logger = log_create("Memoria.log", "Memoria_log", true, LOG_LEVEL_INFO);
     if (memoria_logger == NULL){
-        perror ("No se pudo crear log para el Kernel");
+        perror ("No se pudo crear log para la memoria");
         exit(EXIT_FAILURE);
     }
 
@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    memoria_config = config_create("Memoria.config");
+    memoria_config = config_create(path_config_Memoria);
 
 	if (memoria_config == NULL) {
         perror ("No se pudo crear el config para la memoria");

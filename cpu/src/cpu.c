@@ -18,7 +18,7 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    cpu_config = config_create("CPU.config");
+    cpu_config = config_create(path_config_CPU);
 
 	if (cpu_config == NULL) {
         perror ("No se pudo crear el config");
@@ -32,6 +32,8 @@ int main(int argc, char* argv[]) {
     PUERTO_ESCUCHA_INTERRUPT = config_get_string_value(cpu_config,"PUERTO_ESCUCHA_INTERRUPT");
     CANTIDAD_ENTRADAS_TLB = config_get_int_value(cpu_config,"CANTIDAD_ENTRADAS_TLB");
     ALGORITMO_TLB = config_get_string_value(cpu_config,"ALGORITMO_TLB");
+
+    log_info(cpu_logger,"IP MEMORIA: %s",IP_MEMORIA);
 
     return 0;
 }

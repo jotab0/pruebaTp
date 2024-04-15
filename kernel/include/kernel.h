@@ -11,6 +11,8 @@ t_log* kernel_logger_extra;
 
 t_config* kernel_config;
 
+char* path_config_Kernel = "/home/utnso/Documents/tp-2024-1c-ubuntunel/kernel/Kernel.config";
+
 // Variables de config
 char* PUERTO_ESCUCHA;
 

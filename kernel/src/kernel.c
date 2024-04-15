@@ -17,10 +17,10 @@ int main(int argc, char* argv[]) {
         exit(EXIT_FAILURE);
     }
 
-    kernel_config = config_create("Kernel.config");
+    kernel_config = config_create(path_config_Kernel);
 
 	if (kernel_config == NULL) {
-        perror ("No se pudo crear el config");
+        perror ("No se pudo crear el config para el módulo kernel");
 		exit(EXIT_FAILURE);
 	}
 
@@ -36,7 +36,6 @@ int main(int argc, char* argv[]) {
     INSTANCIAS_RECURSOS = config_get_array_value(kernel_config,"INSTANCIAS_RECURSOS");
     GRADO_MULTIPROGRAMACION = config_get_int_value(kernel_config,"GRADO_MULTIPROGRAMACION");
 
-    log_info(kernel_logger,"IP MEMORIA: %s",IP_MEMORIA);
-
+    log_info(kernel_logger,"RECURSOS: %s|%s|%s",RECURSOS[0],RECURSOS[1],RECURSOS[2]);
     return 0;
 }

@@ -25,7 +25,7 @@ int fd_cpu_dispatch;
 int fd_cpu_interrupt;
 int fd_kernel_dispatch;
 int fd_kernel_interrupt;
-// extern int fd_memoria; no se si va este
+int fd_memoria;
 
  
 

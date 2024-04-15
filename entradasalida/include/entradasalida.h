@@ -13,6 +13,9 @@ t_config* es_config;
 
 char* path_config_ES= "/home/utnso/Documents/tp-2024-1c-ubuntunel/entradasalida/ES.config";
 
+int fd_kernel;
+int fd_memoria
+
 // Variables de config
 char* TIPO_INTERFAZ;
 int TIEMPO_UNIDAD_TRABAJO;

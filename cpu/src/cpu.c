@@ -6,19 +6,19 @@
 int main(int argc, char* argv[]) {
 
     // SE CREAN LOGS Y CONFIG
-    t_log* cpu_logger = log_create("CPU.log", "CPU_log", true, LOG_LEVEL_INFO);
+    cpu_logger = log_create("CPU.log", "CPU_log", true, LOG_LEVEL_INFO);
     if (cpu_logger == NULL){
         perror ("No se pudo crear log para CPU");
         exit(EXIT_FAILURE);
     }
 
-    t_log* cpu_logger_extra = log_create("CPU_extra.log", "CPU_extra_log", true, LOG_LEVEL_TRACE);
+    cpu_logger_extra = log_create("CPU_extra.log", "CPU_extra_log", true, LOG_LEVEL_TRACE);
     if (cpu_logger == NULL){
         perror ("No se pudo crear log extra para CPU");
         exit(EXIT_FAILURE);
     }
 
-    t_config* cpu_config = config_create("CPU.config");
+    cpu_config = config_create("CPU.config");
 
 	if (cpu_config == NULL) {
         perror ("No se pudo crear el config");

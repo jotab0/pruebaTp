@@ -5,19 +5,19 @@
 
 int main(int argc, char* argv[]) {
     
-    t_log* kernel_logger = log_create("Kernel.log", "Kernel_log", true, LOG_LEVEL_INFO);
+    kernel_logger = log_create("Kernel.log", "Kernel_log", true, LOG_LEVEL_INFO);
     if (kernel_logger == NULL){
         perror ("No se pudo crear log para el Kernel");
         exit(EXIT_FAILURE);
     }
 
-    t_log* kernel_logger_extra = log_create("Kernel_extra.log", "Kernel_extra_log", true, LOG_LEVEL_TRACE);
+    kernel_logger_extra = log_create("Kernel_extra.log", "Kernel_extra_log", true, LOG_LEVEL_TRACE);
     if (kernel_logger == NULL){
         perror ("No se pudo crear log extra para el Kernel");
         exit(EXIT_FAILURE);
     }
 
-    t_config* kernel_config = config_create("Kernel.config");
+    kernel_config = config_create("Kernel.config");
 
 	if (kernel_config == NULL) {
         perror ("No se pudo crear el config");

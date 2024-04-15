@@ -6,7 +6,6 @@
 #include <utils/include/shared.h>
 
 // VARIABLES GLOBALES
-
 t_log* cpu_logger;
 t_log* cpu_logger_extra;
 

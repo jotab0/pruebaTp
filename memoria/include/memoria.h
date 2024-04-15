@@ -5,11 +5,13 @@
 #include <stdio.h>
 #include <utils/include/shared.h> 
 
+// VARIABLES GLOBALES
 t_log* memoria_logger;
 t_log* memoria_logger_extra;
 
 t_config* memoria_config;
 
+// Variables de config
 char* PUERTO_ESCUCHA;
 
 int TAM_MEMORIA;

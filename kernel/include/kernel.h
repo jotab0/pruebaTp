@@ -6,7 +6,6 @@
 #include <utils/include/shared.h> 
 
 // VARIABLES GLOBALES
-
 t_log* kernel_logger;
 t_log* kernel_logger_extra;
 

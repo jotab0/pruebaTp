@@ -5,11 +5,13 @@
 
 int main(int argc, char* argv[]) {
 
+    // SE CREAN LOGS Y CONFIG
     t_log* cpu_logger = log_create("CPU.log", "CPU_log", true, LOG_LEVEL_INFO);
     if (cpu_logger == NULL){
         perror ("No se pudo crear log para CPU");
         exit(EXIT_FAILURE);
     }
+
     t_log* cpu_logger_extra = log_create("CPU_extra.log", "CPU_extra_log", true, LOG_LEVEL_TRACE);
     if (cpu_logger == NULL){
         perror ("No se pudo crear log extra para CPU");
@@ -19,9 +21,11 @@ int main(int argc, char* argv[]) {
     t_config* cpu_config = config_create("CPU.config");
 
 	if (cpu_config == NULL) {
+        perror ("No se pudo crear el config");
 		exit(EXIT_FAILURE);
 	}
 
+    // SE ASIGNAN LOS VALORES A VARIABLES GLOBALES A PARTIR DE ARCHIVO DE CONFIGURACIÓN
     IP_MEMORIA = config_get_string_value(cpu_config,"IP_MEMORIA");
     PUERTO_MEMORIA = config_get_string_value(cpu_config,"PUERTO_MEMORIA");
     PUERTO_ESCUCHA_DISPATCH = config_get_string_value(cpu_config,"PUERTO_ESCUCHA_DISPATCH");

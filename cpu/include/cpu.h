@@ -1,9 +1,8 @@
 #ifndef CPU_H_
 #define CPU_H_
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <utils/include/shared.h>
+#include "CPU_gestor.h"
+#include "inicializar_cpu.h"
 
 // VARIABLES GLOBALES
 t_log* cpu_logger;
@@ -21,6 +20,12 @@ char* PUERTO_ESCUCHA_INTERRUPT;
 
 int CANTIDAD_ENTRADAS_TLB;
 char* ALGORITMO_TLB;
+
+int fd_cpu_dispatch;
+int fd_cpu_interrupt;
+int fd_kernel_dispatch;
+int fd_kernel_interrupt;
+int fd_memoria;
 
  
 

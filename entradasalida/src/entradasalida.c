@@ -44,6 +44,6 @@ int main(int argc, char* argv[]) {
     //Me conecto como Cliente a KERNEL
     fd_kernel = crear_conexion(IP_KERNEL, PUERTO_KERNEL);
     log_info(es_logger, "Conexion con Kernel exitosa.");
-    
+
     return 0; 
 }

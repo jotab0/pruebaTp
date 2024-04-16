@@ -4,12 +4,12 @@
 char* path_config_Memoria = "/home/utnso/Documents/tp-2024-1c-ubuntunel/memoria/Memoria.config";
 
 void inicializar_memoria(){
-    iniciar_logs();
+    inicializar_logs();
     iniciar_config();
     imprimir_config();
 }
 
-void iniciar_logs(){
+void inicializar_logs(){
 
     // INCIA MEMORIA
     memoria_logger = log_create("Memoria.log", "Memoria_log", true, LOG_LEVEL_INFO);

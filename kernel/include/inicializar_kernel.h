@@ -1,0 +1,4 @@
+#ifndef INICIALIZAR_KERNEL_H_
+#define INICIALIZAR_KERNEL_H_
+
+#endif

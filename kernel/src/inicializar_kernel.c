@@ -1,0 +1,1 @@
+#include "../include/inicializar_kernel.h"

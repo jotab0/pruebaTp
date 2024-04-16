@@ -35,6 +35,8 @@ int main(int argc, char* argv[]) {
 
     log_info(cpu_logger,"IP MEMORIA: %s",IP_MEMORIA);
 
+    
+
     return 0;
 }
 

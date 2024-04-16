@@ -1,17 +1,20 @@
 #ifndef KERNEL_H_
 #define KERNEL_H_
 
-#include "../include/k_gestor.h"
-
+#include "k_gestor.h"
 #include "inicializar_kernel.h"
+
 #include "kernel_cpu_dispatch.h"
 #include "kernel_cpu_interrupt.h"
 #include "kernel_entradasalida.h"
 #include "kernel_memoria.h"
 
+#include<commons/log.h>
+#include<commons/config.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <utils/include/shared.h> 
+
 #include <utils/include/cliente/cliente.h>
 #include <utils/include/servidor/servidor.h>
 

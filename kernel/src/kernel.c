@@ -24,17 +24,6 @@ int main(int argc, char* argv[]) {
 		exit(EXIT_FAILURE);
 	}
 
-    PUERTO_ESCUCHA = config_get_string_value(kernel_config,"PUERTO_ESCUCHA");
-    IP_MEMORIA = config_get_string_value(kernel_config,"IP_MEMORIA");
-    PUERTO_MEMORIA = config_get_string_value(kernel_config,"PUERTO_MEMORIA");
-    IP_CPU = config_get_string_value(kernel_config,"IP_CPU");
-    PUERTO_CPU_DISPATCH = config_get_string_value(kernel_config,"PUERTO_CPU_DISPATCH");
-    PUERTO_CPU_INTERRUPT = config_get_string_value(kernel_config,"PUERTO_CPU_INTERRUPT");
-    ALGORITMO_PLANIFICACION = config_get_string_value(kernel_config,"ALGORITMO_PLANIFICACION");
-    QUANTUM = config_get_int_value(kernel_config,"QUANTUM"); 
-    RECURSOS = config_get_array_value(kernel_config,"RECURSOS");
-    INSTANCIAS_RECURSOS = config_get_array_value(kernel_config,"INSTANCIAS_RECURSOS");
-    GRADO_MULTIPROGRAMACION = config_get_int_value(kernel_config,"GRADO_MULTIPROGRAMACION");
 
     log_info(kernel_logger,"RECURSOS: %s|%s|%s",RECURSOS[0],RECURSOS[1],RECURSOS[2]);
 

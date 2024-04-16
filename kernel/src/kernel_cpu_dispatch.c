@@ -1,5 +1,6 @@
 #include "../include/kernel_cpu_dispatch.h"
 
+
 void atender_kernel_cpu_dispatch(){
     bool control_key = 1;
     while(control_key){

@@ -1,8 +1,9 @@
-#ifndef ENTRADASALIDA_H_
-#define ENTRADASALIDA_H_
+#ifndef ES_H_
+#define ES_H_
 
 #include <stdlib.h>
 #include <stdio.h>
+
 #include <utils/include/shared.h> 
 
 
@@ -11,8 +12,6 @@ extern t_log* es_logger;
 extern t_log* es_logger_extra;
 
 extern t_config* es_config;
-
-extern char* path_config_ES= "/home/utnso/Documents/tp-2024-1c-ubuntunel/entradasalida/ES.config";
 
 extern int fd_kernel;
 extern int fd_memoria;

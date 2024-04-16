@@ -21,6 +21,4 @@ extern int TAM_PAGINA;
 extern char* PATH_INSTRUCCIONES;
 extern int RETARDO_RESPUESTA;
 
-
-
 #endif

@@ -1,6 +1,9 @@
 #include "/home/utnso/Documents/tp-2024-1c-ubuntunel/memoria/include/memoria.h"
+#include "/home/utnso/Documents/tp-2024-1c-ubuntunel/memoria/include/inicializar_memoria.h"
 
-static void inicializar_memoria(){
+char* path_config_Memoria = "/home/utnso/Documents/tp-2024-1c-ubuntunel/memoria/Memoria.config";
+
+void inicializar_memoria(){
     iniciar_logs();
     iniciar_config();
     imprimir_config();

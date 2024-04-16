@@ -1,9 +1,27 @@
-#include "/home/utnso/Documents/tp-2024-1c-ubuntunel/memoria/include/memoria.h"
-
+#include "../include/memoria.h"
+#include "../include/inicializar_memoria.h"
+#include "/home/utnso/Documents/tp-2024-1c-ubuntunel/utils/src/utils/include/servidor/servidor.h"
+#include "/usr/include/commons/log.h"
 
 // SERVIDOR DE: CPU, KERNEL, ENTRADASALIDA
 // CLIENTE DE: - 
 
+// Declaracion de varibales
+t_log* memoria_logger;
+t_log* memoria_logger_extra;
+t_config* memoria_config;
+
+
+int fd_memoria;
+int fd_cpu;
+int fd_interfaz;
+int fd_kernel;
+
+char* PUERTO_ESCUCHA;
+int TAM_PAGINA;
+char* PATH_INSTRUCCIONES;
+int TAM_MEMORIA;
+int RETARDO_RESPUESTA;
 
 int main(int argc, char* argv[]) {
     
@@ -28,7 +46,6 @@ int main(int argc, char* argv[]) {
     // FINALIZAR MEMORIA 
     
     //int fd_kernel = iniciar_servidor()
-
 
     return 0;
 }

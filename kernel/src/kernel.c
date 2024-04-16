@@ -4,7 +4,7 @@
 // CLIENTE DE: MEMORIA, CPU 
 
 int main(int argc, char* argv[]) {
-
+   
     kernel_logger = log_create("Kernel.log", "Kernel_log", true, LOG_LEVEL_INFO);
     if (kernel_logger == NULL){
         perror ("No se pudo crear log para el Kernel");
@@ -24,7 +24,6 @@ int main(int argc, char* argv[]) {
 		exit(EXIT_FAILURE);
 	}
 
-
     log_info(kernel_logger,"RECURSOS: %s|%s|%s",RECURSOS[0],RECURSOS[1],RECURSOS[2]);
 
     //Inicializar Kernel
@@ -35,7 +34,7 @@ int main(int argc, char* argv[]) {
     log_info(kernel_logger, "Conexion con memoria exitosa.");
 
     //Conectarse con CPU
-    fd_cpu_dispath = crear_conexion(IP_CPU, PUERTO_CPU_DISPATCH);
+    fd_cpu_dispatch = crear_conexion(IP_CPU, PUERTO_CPU_DISPATCH);
     log_info(kernel_logger, "Conexion con CPU DISPATCH exitosa.");
 
     fd_cpu_interrupt = crear_conexion(IP_CPU, PUERTO_CPU_INTERRUPT);
@@ -63,6 +62,8 @@ int main(int argc, char* argv[]) {
     pthread_t hilo_memoria;
     pthread_create(&hilo_memoria, NULL, (void*)atender_kernel_memoria, NULL);
     pthread_join(hilo_memoria, NULL);
+
+    log_debug(kernel_log_debug, "Advertencia de salida");
 
     //Iniciar la consola interactiva
     

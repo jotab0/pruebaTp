@@ -29,7 +29,7 @@ int iniciar_servidor(char* puerto, t_log* log, char* msj_del_server)
 // El proceso servidor se queda bloqueado en accept()
 // hasta que se le conecte un cliente.
 // Si el servidor no esta en accept(), el cliente no podra llamar a connect(), la cual fallara.
-int esperar_cliente(int socket_servidor, t_log* log){
+int esperar_cliente(int socket_servidor, t_log* log, char* msj_del_server){
 	int socket_para_cliente = accept(socket_servidor, NULL, NULL);
 	log_info(log, "Se conecto un cliente");
 

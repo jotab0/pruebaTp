@@ -7,28 +7,26 @@
 
 
 // VARIABLES GLOBALES
-t_log* es_logger;
-t_log* es_logger_extra;
+extern t_log* es_logger;
+extern t_log* es_logger_extra;
 
-t_config* es_config;
+extern t_config* es_config;
 
-char* path_config_ES= "/home/utnso/Documents/tp-2024-1c-ubuntunel/entradasalida/ES.config";
-
-int fd_kernel;
-int fd_memoria;
+extern int fd_kernel;
+extern int fd_memoria;
 
 // Variables de config
-char* TIPO_INTERFAZ;
-int TIEMPO_UNIDAD_TRABAJO;
+extern char* TIPO_INTERFAZ;
+extern int TIEMPO_UNIDAD_TRABAJO;
 
-char* IP_KERNEL;
-char* PUERTO_KERNEL;
+extern char* IP_KERNEL;
+extern char* PUERTO_KERNEL;
 
-char* IP_MEMORIA;
-char* PUERTO_MEMORIA;
+extern char* IP_MEMORIA;
+extern char* PUERTO_MEMORIA;
 
-char* PATH_BASE_DIALFS;
-int BLOCK_SIZE;
-int BLOCK_COUNT;
+extern char* PATH_BASE_DIALFS;
+extern int BLOCK_SIZE;
+extern int BLOCK_COUNT;
 
 #endif

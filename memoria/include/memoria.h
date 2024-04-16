@@ -13,6 +13,11 @@ t_config* memoria_config;
 
 char* path_config_Memoria = "/home/utnso/Documents/tp-2024-1c-ubuntunel/memoria/Memoria.config";
 
+int fd_memoria;
+int fd_cpu;
+int fd_interfaz;
+int fd_kernel;
+
 // Variables de config
 char* PUERTO_ESCUCHA;
 

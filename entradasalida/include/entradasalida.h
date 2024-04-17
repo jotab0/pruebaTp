@@ -3,6 +3,7 @@
 
 #include "../include/es_gestor.h"
 #include "../include/inicializar_es.h"
+#include "../include/comunicaciones_es.h"
 #include <utils/include/shared.h>
 
 // VARIABLES GLOBALES

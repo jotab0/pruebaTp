@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 #include <utils/include/shared.h> 
 
@@ -25,7 +26,7 @@ extern int RETARDO_RESPUESTA;
 
 extern int fd_memoria;
 extern int fd_cpu;
-extern int fd_interfaz;
+extern int fd_es;
 extern int fd_kernel;
 
 #endif

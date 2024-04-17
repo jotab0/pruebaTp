@@ -17,5 +17,14 @@ int main(int argc, char* argv[]) {
     fd_kernel = crear_conexion(IP_KERNEL, PUERTO_KERNEL);
     log_info(es_logger, "Conexion con Kernel exitosa.");
 
+     
+    pthread_t hilo_cpu;
+    pthread_create(&hilo_cpu,NULL,(void*)esperar_cpu,NULL);
+    pthread_join(esperar_cpu);
+        
+    pthread_t hilo_kernel;
+    pthread_create(&hilo_kernel,NULL,(void*)esperar_kernel,NULL);
+    pthread_detach(esperar_kernel);
+    
     return 0; 
 }

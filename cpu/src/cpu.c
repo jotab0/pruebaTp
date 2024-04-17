@@ -32,7 +32,7 @@ int main(void){
 
     pthread_t hilo_memoria;
     pthread_create(&hilo_memoria,NULL,(void*)esperar_memoria,NULL);
-    pthread_detach(esperar_memoria);
+    pthread_join(esperar_memoria,NULL);
 
 	return EXIT_SUCCESS;
 }

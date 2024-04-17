@@ -3,6 +3,7 @@
 
 #include "m_gestor.h"
 #include "../include/inicializar_memoria.h"
+#include "../include/comunicaciones_memoria.h"
 #include <utils/include/shared.h>
 // VARIABLES GLOBALES
 t_log* memoria_logger;
@@ -12,7 +13,7 @@ t_config* memoria_config;
 
 int fd_memoria;
 int fd_cpu;
-int fd_interfaz;
+int fd_es;
 int fd_kernel;
 
 // Variables de config

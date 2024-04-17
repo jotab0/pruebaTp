@@ -22,10 +22,19 @@ int main(int argc, char* argv[]) {
     fd_kernel = esperar_cliente(fd_memoria, memoria_logger,"Kernel");
     
     // Esperar conexion de entrada y salida
-    fd_interfaz = esperar_cliente(fd_memoria, memoria_logger,"E/S");
+    fd_es = esperar_cliente(fd_memoria, memoria_logger,"E/S");
     
+    pthread_t hilo_cpu;
+    pthread_create(&hilo_cpu,NULL,(void*)esperar_cpu,NULL);
+    pthread_detach(esperar_cpu);
+    
+    pthread_t hilo_kernel;
+    pthread_create(&hilo_kernel,NULL,(void*)esperar_kernel,NULL);
+    pthread_detach(esperar_kernel);
 
-    
+    pthread_t hilo_es;
+    pthread_create(&hilo_es,NULL,(void*)esperar_es,NULL);
+    pthread_join(esperar_cpu,NULL);
     // FINALIZAR MEMORIA 
 
     return EXIT_SUCCESS;

@@ -3,8 +3,7 @@
 
 #include "CPU_gestor.h"
 #include "inicializar_cpu.h"
-#include "../../utils/src/utils/include/cliente/cliente.h"
-#include "../../utils/src/utils/include/servidor/servidor.h"
+#include <utils/include/shared.h>
 
 // VARIABLES GLOBALES
 t_log* cpu_logger;

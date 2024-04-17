@@ -16,12 +16,12 @@ extern t_log* memoria_logger_extra;
 extern t_config* memoria_config;
 
 extern char* PUERTO_ESCUCHA;
+
 extern int TAM_MEMORIA;
 extern int TAM_PAGINA;
+
 extern char* PATH_INSTRUCCIONES;
 extern int RETARDO_RESPUESTA;
-
-extern char* path_config_Memoria; 
 
 extern int fd_memoria;
 extern int fd_cpu;

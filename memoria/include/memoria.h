@@ -1,11 +1,9 @@
 #ifndef MEMORIA_H_
 #define MEMORIA_H_
 
-#include <utils/include/shared.h> 
 #include "m_gestor.h"
 #include "../include/inicializar_memoria.h"
-#include "../../utils/src/utils/include/cliente/cliente.h"
-#include "../../utils/src/utils/include/servidor/servidor.h"
+#include <utils/include/shared.h>
 // VARIABLES GLOBALES
 t_log* memoria_logger;
 t_log* memoria_logger_extra;

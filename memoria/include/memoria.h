@@ -1,28 +1,27 @@
 #ifndef MEMORIA_H_
 #define MEMORIA_H_
 
-#include <stdlib.h>
-#include <stdio.h>
 #include <utils/include/shared.h> 
-
+#include "m_gestor.h"
+#include "../include/inicializar_memoria.h"
+#include "../../utils/src/utils/include/cliente/cliente.h"
+#include "../../utils/src/utils/include/servidor/servidor.h"
 // VARIABLES GLOBALES
-extern t_log* memoria_logger;
-extern t_log* memoria_logger_extra;
+t_log* memoria_logger;
+t_log* memoria_logger_extra;
 
-extern t_config* memoria_config;
+t_config* memoria_config;
 
-extern char* path_config_Memoria;
-
-extern int fd_memoria;
-extern int fd_cpu;
-extern int fd_interfaz;
-extern int fd_kernel;
+int fd_memoria;
+int fd_cpu;
+int fd_interfaz;
+int fd_kernel;
 
 // Variables de config
-extern char* PUERTO_ESCUCHA;
-extern int TAM_MEMORIA;
-extern int TAM_PAGINA;
-extern char* PATH_INSTRUCCIONES;
-extern int RETARDO_RESPUESTA;
+char* PUERTO_ESCUCHA;
+int TAM_MEMORIA;
+int TAM_PAGINA;
+char* PATH_INSTRUCCIONES;
+int RETARDO_RESPUESTA;
 
 #endif

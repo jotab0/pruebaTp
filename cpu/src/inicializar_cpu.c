@@ -1,4 +1,4 @@
-#include "inicializar_cpu.h"
+#include "../include/inicializar_cpu.h"
 
 // iniciar estructuras
 void inicializar_cpu() {
@@ -39,6 +39,7 @@ void iniciar_config(){
 
 void imprimir_config(){
     log_info(cpu_logger,"IP MEMORIA: %s",IP_MEMORIA);
+    // Agregar los para debugear
 }
 
    

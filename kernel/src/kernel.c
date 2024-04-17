@@ -5,35 +5,14 @@
 
 int main(int argc, char* argv[]) {
    
-    kernel_logger = log_create("Kernel.log", "Kernel_log", true, LOG_LEVEL_INFO);
-    if (kernel_logger == NULL){
-        perror ("No se pudo crear log para el Kernel");
-        exit(EXIT_FAILURE);
-    }
-
-    kernel_logger_extra = log_create("Kernel_extra.log", "Kernel_extra_log", true, LOG_LEVEL_TRACE);
-    if (kernel_logger == NULL){
-        perror ("No se pudo crear log extra para el Kernel");
-        exit(EXIT_FAILURE);
-    }
-
-    kernel_config = config_create(path_config_Kernel);
-
-	if (kernel_config == NULL) {
-        perror ("No se pudo crear el config para el módulo kernel");
-		exit(EXIT_FAILURE);
-	}
-
-    log_info(kernel_logger,"RECURSOS: %s|%s|%s",RECURSOS[0],RECURSOS[1],RECURSOS[2]);
-
-    //Inicializar Kernel
+    //Inicializa Kernel
     inicializar_kernel();
 
-    //Conectarse con Memoria
+    //Conecta con Memoria
     fd_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     log_info(kernel_logger, "Conexion con memoria exitosa.");
 
-    //Conectarse con CPU
+    //Conecta con CPU
     fd_cpu_dispatch = crear_conexion(IP_CPU, PUERTO_CPU_DISPATCH);
     log_info(kernel_logger, "Conexion con CPU DISPATCH exitosa.");
 
@@ -68,5 +47,5 @@ int main(int argc, char* argv[]) {
     //Iniciar la consola interactiva
     
 
-    return 0;
+    return EXIT_SUCCESS;
 }

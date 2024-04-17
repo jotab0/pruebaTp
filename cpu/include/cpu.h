@@ -3,6 +3,8 @@
 
 #include "CPU_gestor.h"
 #include "inicializar_cpu.h"
+#include "../../utils/src/utils/include/cliente/cliente.h"
+#include "../../utils/src/utils/include/servidor/servidor.h"
 
 // VARIABLES GLOBALES
 t_log* cpu_logger;
@@ -26,7 +28,5 @@ int fd_cpu_interrupt;
 int fd_kernel_dispatch;
 int fd_kernel_interrupt;
 int fd_memoria;
-
- 
 
 #endif

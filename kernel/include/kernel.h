@@ -22,8 +22,6 @@ t_log* kernel_logger_extra;
 t_log* kernel_log_debug;
 t_config* kernel_config;
 
-char* path_config_Kernel = "/home/utnso/Documents/tp-2024-1c-ubuntunel/kernel/Kernel.config";
-
 int fd_memoria;
 int fd_entradasalida;
 int fd_cpu_dispatch;

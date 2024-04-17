@@ -1,7 +1,4 @@
-#include "/home/utnso/Documents/tp-2024-1c-ubuntunel/memoria/include/memoria.h"
-#include "/home/utnso/Documents/tp-2024-1c-ubuntunel/memoria/include/inicializar_memoria.h"
-
-char* path_config_Memoria = "/home/utnso/Documents/tp-2024-1c-ubuntunel/memoria/Memoria.config";
+# include "../include/inicializar_memoria.h"
 
 void inicializar_memoria(){
     inicializar_logs();
@@ -10,7 +7,6 @@ void inicializar_memoria(){
 }
 
 void inicializar_logs(){
-
     // INCIA MEMORIA
     memoria_logger = log_create("Memoria.log", "Memoria_log", true, LOG_LEVEL_INFO);
     if (memoria_logger == NULL){
@@ -43,6 +39,5 @@ void iniciar_config(){
 }
 
 void imprimir_config(){
-
     log_info(memoria_logger,"PATH INSTRUCCIONES: %s",PATH_INSTRUCCIONES);
 }

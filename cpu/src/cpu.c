@@ -16,7 +16,7 @@ int main(void){
     fd_cpu_interrupt = iniciar_servidor(PUERTO_ESCUCHA_INTERRUPT, cpu_logger, "CPU - Interrupt iniciada!!");
    
     // conectarnos como cliente a MEMORIA
-    fd_memoria = crear_concexion(IP_MEMORIA, PUERTO_MEMORIA);
+    fd_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
     log_info(cpu_logger, "Conexion con MEMORIA exitosa");
 
     // esperar al cliente KERNEL en Dispatch

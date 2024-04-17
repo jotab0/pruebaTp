@@ -3,13 +3,26 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include<signal.h>
-#include<unistd.h>
-#include<sys/socket.h>
-#include<netdb.h>
-#include<string.h>
-#include<commons/log.h>
+#include <signal.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <string.h>
+#include <commons/log.h>
 
+typedef enum{
+    MENSAJE, 
+    PAQUETE,
+    HANDSHAKE,
+    //KERNEL-MEMORIA,
+    RPTA_HANDSHAKE,
+    CREAR_PROCESO_KM,
+    RPTA_CREAR_PROCESO_MK
+    //KERNEL-CPU,
+    //KERNEL-ENTRADASALIDA,
+    //ENTRADASALIDA-MEMORIA,
+    //CPU-MEMORIA
+}op_code;
 
 // para enviar y recibir mensajes
 typedef struct{
@@ -19,7 +32,7 @@ typedef struct{
 
 //estructura para crear paquete
 typedef struct{
-    //op_code codigo_operacion;
+    op_code codigo_operacion;
     t_buffer* buffer;
 }t_paquete;
 

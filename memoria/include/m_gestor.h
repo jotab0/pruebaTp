@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <Shared.h>
+#include <utils/include/shared.h> 
 
 #include <commons/log.h>
 #include <commons/config.h>
@@ -20,5 +20,12 @@ extern int TAM_MEMORIA;
 extern int TAM_PAGINA;
 extern char* PATH_INSTRUCCIONES;
 extern int RETARDO_RESPUESTA;
+
+extern char* path_config_Memoria; 
+
+extern int fd_memoria;
+extern int fd_cpu;
+extern int fd_interfaz;
+extern int fd_kernel;
 
 #endif

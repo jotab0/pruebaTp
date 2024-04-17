@@ -14,31 +14,8 @@
 #include <commons/log.h> 
 #include <commons/config.h>  // de esta manera agregamos librerías de las commons
 
-typedef enum{
-    MENSAJE, 
-    PAQUETE,
-    HANDSHAKE,
-    //KERNEL-MEMORIA,
-    RPTA_HANDSHAKE,
-    CREAR_PROCESO_KM,
-    RPTA_CREAR_PROCESO_MK
-    //KERNEL-CPU,
-    //KERNEL-ENTRADASALIDA,
-    //ENTRADASALIDA-MEMORIA,
-    //CPU-MEMORIA
-}op_code;
 
-/*typedef struct 
-{
-    int size;
-    void* stream;
-} t_buffer;
 
-typedef struct{
-    op_code codigo_operacion;
-    t_buffer* buffer;
-} t_paquete;
-*/
 /*
 void prueba_de_shared(char* mensaje);
 int sumador_de_dos_numeros(int valor1, int valor2);

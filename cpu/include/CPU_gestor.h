@@ -3,7 +3,11 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+
 #include <utils/include/shared.h>
+
+#include <commons/log.h>
+#include <commons/config.h>
 
 // VARIABLES GLOBALES
 extern t_log* cpu_logger;
@@ -11,8 +15,7 @@ extern t_log* cpu_logger_extra;
 
 extern t_config* cpu_config;
 
-extern char* path_config_CPU = "/home/utnso/Documents/tp-2024-1c-ubuntunel/cpu/CPU.config";
-
+extern char* path_config_CPU;
 // Variables de config
 extern char* IP_MEMORIA;
 extern char* PUERTO_MEMORIA;

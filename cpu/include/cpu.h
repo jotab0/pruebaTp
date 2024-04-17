@@ -3,6 +3,7 @@
 
 #include "c_gestor.h"
 #include "inicializar_cpu.h"
+#include "comunicaciones.h"
 #include <utils/include/shared.h>
 
 // VARIABLES GLOBALES
@@ -27,5 +28,7 @@ int fd_cpu_interrupt;
 int fd_kernel_dispatch;
 int fd_kernel_interrupt;
 int fd_memoria;
+
+
 
 #endif

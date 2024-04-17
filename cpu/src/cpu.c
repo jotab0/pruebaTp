@@ -22,18 +22,17 @@ int main(void){
 
     // COMUNICACIÓN
     pthread_t hilo_k_dispatch;
-    pthread_create(&hilo_k_dispatch,NULL,(void*)esperar_kernel_dispatch,NULL);
-    pthread_detach(esperar_kernel_dispatch);
+    pthread_create(&hilo_k_dispatch,NULL,(void*)esperar_kernel_dispatch_cpu,NULL);
+    pthread_detach(esperar_kernel_dispatch_cpu);
                         //1//             //3//                 //4//
                         //HILO//          //Funcion deseada//   //Puntero si hace falta//
     pthread_t hilo_k_interrupt;
-    pthread_create(&hilo_k_interrupt,NULL,(void*)esperar_kernel_interrupt,NULL);
-    pthread_detach(esperar_kernel_interrupt);
+    pthread_create(&hilo_k_interrupt,NULL,(void*)esperar_kernel_interrupt_cpu,NULL);
+    pthread_detach(esperar_kernel_interrupt_cpu);
 
     pthread_t hilo_memoria;
-    pthread_create(&hilo_memoria,NULL,(void*)esperar_memoria,NULL);
-    pthread_join(esperar_memoria,NULL);
-
+    pthread_create(&hilo_memoria,NULL,(void*)esperar_memoria_cpu,NULL);
+    pthread_join(esperar_memoria_cpu,NULL);
 
 	return EXIT_SUCCESS;
 }

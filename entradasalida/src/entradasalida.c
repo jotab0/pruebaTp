@@ -18,13 +18,13 @@ int main(int argc, char* argv[]) {
     log_info(es_logger, "Conexion con Kernel exitosa.");
 
      
-    pthread_t hilo_cpu;
-    pthread_create(&hilo_cpu,NULL,(void*)esperar_cpu,NULL);
-    pthread_detach(esperar_cpu);
+    pthread_t hilo_memoria;
+    pthread_create(&hilo_memoria,NULL,(void*)esperar_memoria_es,NULL);
+    pthread_detach(esperar_memoria_es);
         
     pthread_t hilo_kernel;
-    pthread_create(&hilo_kernel,NULL,(void*)esperar_kernel,NULL);
-    pthread_join(esperar_kernel,NULL);
+    pthread_create(&hilo_kernel,NULL,(void*)esperar_kernel_es,NULL);
+    pthread_join(esperar_kernel_es,NULL);
     
     return 0; 
 }

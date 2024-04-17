@@ -1,7 +1,7 @@
 
 # include "../include/comunicaciones_memoria.h"
 
-void esperar_cpu(){
+void esperar_cpu_memoria(){
     int estado_while = 0;
     while (estado_while) { //Bucle que queda esperando la operación
         int cod_op = recibir_operacion(fd_cpu);
@@ -21,7 +21,7 @@ void esperar_cpu(){
 	}
 }
 
-void esperar_kernel(){
+void esperar_kernel_memoria(){
     int estado_while = 0;
     while (estado_while) { //Bucle que queda esperando la operación
         int cod_op = recibir_operacion(fd_kernel);
@@ -41,7 +41,7 @@ void esperar_kernel(){
 	}
 }
 
-void esperar_es(){
+void esperar_es_memoria(){
     int estado_while = 0;
     while (estado_while) { //Bucle que queda esperando la operación
         int cod_op = recibir_operacion(fd_es);

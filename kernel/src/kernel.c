@@ -8,6 +8,7 @@ int main(int argc, char* argv[]) {
     //Inicializa Kernel
     inicializar_kernel();
 
+
     //Conecta con CPU
     fd_cpu_dispatch = crear_conexion(IP_CPU, PUERTO_CPU_DISPATCH);
     log_info(kernel_logger, "Conexion con CPU DISPATCH exitosa.");
@@ -16,7 +17,11 @@ int main(int argc, char* argv[]) {
 
     //Conecta con Memoria
     fd_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);
-    log_info(kernel_logger, "Conexion con memoria exitosa.");
+    log_info(kernel_logger, "Conexion con MEMORIA exitosa.");
+
+    fd_kernel = iniciar_servidor(PUERTO_ESCUCHA, kernel_logger, "!! Servidor ENTRADA-SALIDA iniciado !!");
+    fd_entradasalida = esperar_cliente(fd_kernel, kernel_logger, "ENTRADA-SALIDA");
+
 
     //Atender los mensajes de CPU - Dispatch
     pthread_t hilo_cpu_dispatch;
@@ -39,7 +44,7 @@ int main(int argc, char* argv[]) {
 
     pthread_t hilo_memoria;
     pthread_create(&hilo_memoria, NULL, (void*)atender_kernel_memoria, NULL);
-    pthread_join(hilo_memoria, NULL);
+    pthread_join(hilo_memoria,NULL);
 
     //log_debug(kernel_logger_extra, "Advertencia de salida");
 

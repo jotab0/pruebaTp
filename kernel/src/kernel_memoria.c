@@ -14,7 +14,11 @@ void atender_kernel_memoria(){
             case -1:
                 log_error(kernel_logger, "Desconexión de MEMORIA");
                 control_key = 0;
-            //exit(EXIT_FAILURE);
+                //exit(EXIT_FAILURE);
+                break;
+            default:
+            log_warning(kernel_logger, "Operacion desconocida de MEMORIA");
+            break;
         }
     }
 }

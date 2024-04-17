@@ -12,7 +12,7 @@
 #include<assert.h>
 
 int iniciar_servidor(char* puerto, t_log* log, char* msj_del_server); 
-int esperar_cliente(int socket_servidor, t_log* log);
+int esperar_cliente(int socket_servidor, t_log* log, char* msj);
 int recibir_operacion(int socket_cliente);
 
 #endif

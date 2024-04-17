@@ -7,6 +7,7 @@ RESERVADA extern. */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <pthread.h>
 
 #include "../src/utils/include/shared.h"
 

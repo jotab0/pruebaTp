@@ -21,7 +21,7 @@ void esperar_kernel_dispatch(){
 }
 
 void esperar_kernel_interrupt(){
-    int estado_while= 0;
+    int estado_while = 0;
     while (estado_while) { //Bucle que queda esperando la operación
         int cod_op = recibir_operacion(fd_cpu_interrupt);
 		switch (cod_op) {

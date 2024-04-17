@@ -6,8 +6,8 @@ EN kernel.h Y SE HACE UNA COPIA EN k_gestor.h CON LA PALABRA
 RESERVADA extern. */
 
 #include "k_gestor.h"
-#include "inicializar_kernel.h"
 
+#include "inicializar_kernel.h"
 #include "kernel_cpu_dispatch.h"
 #include "kernel_cpu_interrupt.h"
 #include "kernel_entradasalida.h"
@@ -43,6 +43,5 @@ char** RECURSOS;
 char** INSTANCIAS_RECURSOS;
 int GRADO_MULTIPROGRAMACION;
 
-void atender_kernel_cpu_dispatch();
 
 #endif

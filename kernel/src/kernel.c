@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 
     pthread_t hilo_cpu_interrupt;
     pthread_create(&hilo_cpu_interrupt, NULL, (void*)atender_kernel_cpu_interrupt, NULL);
-    pthread_detach(hilo_cpu_dispatch);
+    pthread_detach(hilo_cpu_interrupt);
 
     //Atender los mensajes de EntradaSalida
 

@@ -34,6 +34,7 @@ int main(void){
     pthread_create(&hilo_memoria,NULL,(void*)esperar_memoria,NULL);
     pthread_join(esperar_memoria,NULL);
 
+
 	return EXIT_SUCCESS;
 }
 

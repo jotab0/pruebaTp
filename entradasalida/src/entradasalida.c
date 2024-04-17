@@ -20,11 +20,11 @@ int main(int argc, char* argv[]) {
      
     pthread_t hilo_cpu;
     pthread_create(&hilo_cpu,NULL,(void*)esperar_cpu,NULL);
-    pthread_join(esperar_cpu);
+    pthread_detach(esperar_cpu);
         
     pthread_t hilo_kernel;
     pthread_create(&hilo_kernel,NULL,(void*)esperar_kernel,NULL);
-    pthread_detach(esperar_kernel);
+    pthread_join(esperar_kernel,NULL);
     
     return 0; 
 }

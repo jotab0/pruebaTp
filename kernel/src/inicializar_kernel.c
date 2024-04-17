@@ -3,7 +3,7 @@
 void inicializar_kernel(){
     inicializar_logs();
     inicializar_configs();
-    //imprimir_configs();
+    imprimir_configs();
 }
 
 void inicializar_logs(){
@@ -23,7 +23,7 @@ void inicializar_logs(){
 
 void inicializar_configs(){
     
-    kernel_config = config_create(path_config_Kernel);
+    kernel_config = config_create("/home/utnso/Documents/tp-2024-1c-ubuntunel/kernel/Kernel.config");
 
 	if (kernel_config == NULL) {
         perror ("No se pudo crear el config para el módulo kernel");
@@ -41,10 +41,9 @@ void inicializar_configs(){
         INSTANCIAS_RECURSOS = config_get_array_value(kernel_config,"INSTANCIAS_RECURSOS");
         GRADO_MULTIPROGRAMACION = config_get_int_value(kernel_config,"GRADO_MULTIPROGRAMACION");
 }
-/*
-    void imprimir_configs(){
-        log_info(kernel_logger, "KERNEL ALGORITMO_PLANIFICACION: %s", ALGORITMO_PLANIFICACION);
-        log_info(kernel_logger, "[RECURSOS]: %s|%s|%s", RECURSOS[0], RECURSOS[1], RECURSOS[2]);
-    }*/
+
+void imprimir_configs(){
+    log_info(kernel_logger, "KERNEL ALGORITMO_PLANIFICACION: %s", ALGORITMO_PLANIFICACION);
+}
 
     

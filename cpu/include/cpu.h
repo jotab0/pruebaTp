@@ -1,7 +1,7 @@
 #ifndef CPU_H_
 #define CPU_H_
 
-#include "CPU_gestor.h"
+#include "c_gestor.h"
 #include "inicializar_cpu.h"
 #include <utils/include/shared.h>
 

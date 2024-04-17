@@ -1,19 +1,20 @@
 #include "../include/cpu.h"
 
-// SERVIDOR DE: KERNEL
+// SERVIDOR DE: KERNEL (x2)
 // CLIENTE DE:  MEMORIA
 
 int main(void){
+    
     // INICIAR CPU
     inicializar_cpu();
 
     // CONEXIONES CPU
-
+    
     // iniciar server de CPU - Dispatch
-    fd_cpu_dispatch = iniciar_servidor(PUERTO_ESCUCHA_DISPATCH, cpu_logger, "CPU - Dispatch iniciada!!");
+    fd_cpu_dispatch = iniciar_servidor(PUERTO_ESCUCHA_DISPATCH, cpu_logger, "!! Servidor CPU-DISPATCH iniciado !!");
 
     // iniciar server de CPU - Interrupt
-    fd_cpu_interrupt = iniciar_servidor(PUERTO_ESCUCHA_INTERRUPT, cpu_logger, "CPU - Interrupt iniciada!!");
+    fd_cpu_interrupt = iniciar_servidor(PUERTO_ESCUCHA_INTERRUPT, cpu_logger, "!! Servidor CPU-DISPATCH iniciado !!");
    
     // conectarnos como cliente a MEMORIA
     fd_memoria = crear_conexion(IP_MEMORIA, PUERTO_MEMORIA);

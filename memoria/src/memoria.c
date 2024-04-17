@@ -12,23 +12,21 @@ int main(int argc, char* argv[]) {
     inicializar_memoria();
 
     // Iniciar servidor de memoria
-    fd_memoria = iniciar_servidor(PUERTO_ESCUCHA,memoria_logger,"Servidor memoria iniciada");  
+    fd_memoria = iniciar_servidor(PUERTO_ESCUCHA,memoria_logger,"!! Servidor MEMORIA iniciada !!");  
+    
+    //CONECTAR CON CLIENTES
+    // Esperar conexion de CPU
+    fd_cpu = esperar_cliente(fd_memoria, memoria_logger,"CPU");
+
+    // Esperar conexion de kernel 
+    fd_kernel = esperar_cliente(fd_memoria, memoria_logger,"Kernel");
     
     // Esperar conexion de entrada y salida
-    log_info(memoria_logger, "Esperando conexion a Interfaz de I/O");
-    fd_interfaz = esperar_cliente(fd_memoria, memoria_logger,"Esperando E/S");
+    fd_interfaz = esperar_cliente(fd_memoria, memoria_logger,"E/S");
     
-    // Esperar conexion de CPU
-    log_info(memoria_logger, "ESperando conexion a CPU");
-    fd_cpu = esperar_cliente(fd_memoria, memoria_logger,"Esperando CPU");
-    
-    // Esperar conexion de kernel 
-    log_info(memoria_logger, "ESperando conexion a Kernel");
-    fd_kernel = esperar_cliente(fd_memoria, memoria_logger,"Esperando kernel");
+
     
     // FINALIZAR MEMORIA 
-    
-    //int fd_kernel = iniciar_servidor()
 
     return EXIT_SUCCESS;
 }

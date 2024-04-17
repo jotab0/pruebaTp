@@ -12,14 +12,11 @@ RESERVADA extern. */
 #include "kernel_cpu_interrupt.h"
 #include "kernel_entradasalida.h"
 #include "kernel_memoria.h"
-
-#include <utils/include/cliente/cliente.h>
-#include <utils/include/servidor/servidor.h>
+#include <utils/include/shared.h>
 
 // VARIABLES GLOBALES
 t_log* kernel_logger;
 t_log* kernel_logger_extra;
-t_log* kernel_log_debug;
 t_config* kernel_config;
 
 int fd_memoria;

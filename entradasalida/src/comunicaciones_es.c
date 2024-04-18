@@ -2,7 +2,7 @@
 
 
 void esperar_kernel_es(){
-    int estado_while = 0;
+    int estado_while = 1;
     while (estado_while) { //Bucle que queda esperando la operación
         int cod_op = recibir_operacion(fd_kernel);
 		switch (cod_op) {
@@ -22,8 +22,9 @@ void esperar_kernel_es(){
 }
 
 void esperar_memoria_es(){
-    int estado_while = 0;
-    while (estado_while) { //Bucle que queda esperando la operación
+    int estado_while = 1;
+    while (estado_while) {
+		log_trace(es_logger,"ESPERANDO MENSAJES DE MEMORIA");
         int cod_op = recibir_operacion(fd_memoria);
         switch (cod_op) {
 		case MENSAJE:

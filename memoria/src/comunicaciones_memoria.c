@@ -2,9 +2,10 @@
 # include "../include/comunicaciones_memoria.h"
 
 void esperar_cpu_memoria(){
-    int estado_while = 0;
-    while (estado_while) { //Bucle que queda esperando la operación
-        int cod_op = recibir_operacion(fd_cpu);
+    int estado_while = 1;
+    while (estado_while) {
+        log_trace(memoria_logger,"ESPERANDO MENSAJES DE CPU");
+		int cod_op = recibir_operacion(fd_cpu);
 		switch (cod_op) {
 		case MENSAJE:
 			break;
@@ -22,8 +23,9 @@ void esperar_cpu_memoria(){
 }
 
 void esperar_kernel_memoria(){
-    int estado_while = 0;
-    while (estado_while) { //Bucle que queda esperando la operación
+    int estado_while = 1;
+    while (estado_while) {
+		log_trace(memoria_logger,"ESPERANDO MENSAJES DE KERNEL");
         int cod_op = recibir_operacion(fd_kernel);
 		switch (cod_op) {
 		case MENSAJE:
@@ -42,8 +44,9 @@ void esperar_kernel_memoria(){
 }
 
 void esperar_es_memoria(){
-    int estado_while = 0;
-    while (estado_while) { //Bucle que queda esperando la operación
+    int estado_while = 1;
+    while (estado_while) {
+		log_trace(memoria_logger,"ESPERANDO MENSAJES DE E/S");
         int cod_op = recibir_operacion(fd_es);
 		switch (cod_op) {
 		case MENSAJE:

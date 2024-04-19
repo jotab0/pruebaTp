@@ -8,6 +8,7 @@ void esperar_cpu_memoria(){
 		int cod_op = recibir_operacion(fd_cpu);
 		switch (cod_op) {
 		case MENSAJE:
+			
 			break;
 		case PAQUETE:
 			break;
@@ -63,3 +64,4 @@ void esperar_es_memoria(){
 		}
 	}
 }
+

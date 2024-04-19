@@ -240,10 +240,10 @@ void enviar_paquete(t_paquete* paquete, int fd){ // RECIBE PAQUETE Y FILE DESCRI
 void* recibir_buffer(int socket_cliente)
 {
 	void* buffer;
-	int* size;
+	int* size = 0;
 	recv(socket_cliente, size, sizeof(int), MSG_WAITALL);
 	buffer = malloc(*size); 									// RESERVO MEMORIA DEL TAMAÑO DEL SIZE PARA BUFFER
 	recv(socket_cliente, buffer, *size, MSG_WAITALL);			// RECIVO EL STREAM
 
-	return buffer;
+	return buffer; // SOLAMENTE TIENE EL STREAM
 }

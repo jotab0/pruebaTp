@@ -60,5 +60,6 @@ t_paquete* crear_paquete_con_buffer(op_code codigo_operacion, t_buffer* buffer);
 void destruir_paquete(t_paquete* paquete);
 void* serializar_paquete(t_paquete* paquete);
 void enviar_paquete(t_paquete* paquete, int fd);
+void* recibir_buffer(int socket_cliente);
 
 #endif

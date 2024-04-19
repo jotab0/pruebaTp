@@ -216,10 +216,10 @@ void* serializar_paquete(t_paquete* paquete){
 	return puntero; 
 }
 
-void enviar_paquete(t_paquete* paquete, int fd){ // RECIVE PAQUETE Y FILE DESCRIPTOR DE CONEXION
+void enviar_paquete(t_paquete* paquete, int fd){ // RECIBE PAQUETE Y FILE DESCRIPTOR DE CONEXION
 	void* a_enviar = serializar_paquete(paquete);
 
-	int bytes = paquete->buffer->size + 2*sizeof(int);
+	int bytes = paquete->buffer->size + 2*sizeof(int); // LE AGREGA *2 int POR LOS QUE LE AGREGO AL SERIALZIAR
 	send(fd, a_enviar, bytes, 0);
 
 	free(a_enviar);
@@ -229,8 +229,21 @@ void enviar_paquete(t_paquete* paquete, int fd){ // RECIVE PAQUETE Y FILE DESCRI
 
 
 // BUFFER 				|-> STREAM + SIZE
-// PAQUETE 				|-> CODIGO DE OPERACION + BUFFER
+// PAQUETE 				|-> CODIGO DE OPERACION + BUFFER (STREAM + SIZE)
 
 // ======== Serializar:
 
-// PAQUETE SERIALZIADO 	|-> CODIGO DE OPERACION + SIZE + BUFFER
+// PAQUETE SERIALZIADO 	|-> CODIGO DE OPERACION + SIZE + STREAM
+
+// Como el size viene antes que el stream:
+
+void* recibir_buffer(int socket_cliente)
+{
+	void* buffer;
+	int* size;
+	recv(socket_cliente, size, sizeof(int), MSG_WAITALL);
+	buffer = malloc(*size); 									// RESERVO MEMORIA DEL TAMAÑO DEL SIZE PARA BUFFER
+	recv(socket_cliente, buffer, *size, MSG_WAITALL);			// RECIVO EL STREAM
+
+	return buffer;
+}

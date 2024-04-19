@@ -8,7 +8,8 @@ void esperar_cpu_memoria(){
 		int cod_op = recibir_operacion(fd_cpu);
 		switch (cod_op) {
 		case MENSAJE:
-			
+			char* mensaje = recibir_buffer(fd_cpu);
+			printf("%s",mensaje);
 			break;
 		case PAQUETE:
 			break;

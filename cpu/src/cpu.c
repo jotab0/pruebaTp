@@ -48,6 +48,13 @@ int main(void){
     }
     pthread_join(hilo_memoria,NULL);
 
+    printf("Llegué hasta aca");
+
+    t_buffer* buffer = crear_buffer();
+    cargar_mensaje_a_buffer(buffer,"Hola memoria",strlen("Hola memoria")+1);
+    t_paquete* paquete = crear_paquete_con_buffer(MENSAJE,buffer);
+    enviar_paquete(paquete,fd_memoria);
+
 	return EXIT_SUCCESS;
 }
 

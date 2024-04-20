@@ -4,7 +4,7 @@
 // CLIENTE DE:  MEMORIA
 
 void mandar_mesaje_a_memoria(){
-    enviar_mensaje("Hola memoria",fd_memoria);
+    enviar_mensaje("Hola memoria, soy CPU",fd_memoria);
 }
 
 int main(void){
@@ -44,7 +44,6 @@ int main(void){
     }
     pthread_detach(hilo_k_interrupt);
 
-    sleep(10);
     pthread_t hilo_mensaje_a_memoria;
     err = pthread_create(&hilo_mensaje_a_memoria,NULL,(void*)mandar_mesaje_a_memoria,NULL);
     if (err!=0){

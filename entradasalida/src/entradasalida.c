@@ -6,7 +6,7 @@
 void mandar_mesajes(){
     sleep(10);
     enviar_mensaje("Hola memoria, soy E/S",fd_memoria);
-    enviar_mensaje("Hola kernel, soy MEMORIA",fd_kernel);
+    enviar_mensaje("Hola kernel, soy E/S",fd_kernel);
 }
 
 int main(int argc, char* argv[]) {

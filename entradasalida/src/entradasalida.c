@@ -3,6 +3,11 @@
 // SERVIDOR DE: -
 // CLIENTE DE: KERNEL, MEMORIA 
 
+void mandar_mesajes(){
+    sleep(10);
+    enviar_mensaje("Hola memoria, soy E/S",fd_memoria);
+    enviar_mensaje("Hola kernel, soy MEMORIA",fd_kernel);
+}
 
 int main(int argc, char* argv[]) {
 
@@ -25,6 +30,14 @@ int main(int argc, char* argv[]) {
         return -3;
     }
     pthread_detach(hilo_memoria);
+
+    pthread_t hilo_mensajes;
+    err = pthread_create(&hilo_mensajes,NULL,(void*)mandar_mesajes,NULL);
+    if (err!=0){
+        perror("Fallo de creación de hilo_k_interrupt(cpu)\n");
+        return -3;
+    }
+    pthread_detach(hilo_mensajes);
   
     pthread_t hilo_kernel;
     err = pthread_create(&hilo_kernel,NULL,(void*)esperar_kernel_es,NULL);

@@ -4,8 +4,11 @@
 // CLIENTE DE: - 
 
 // MENSAJES DE PRUEBA
-void mandar_mensaje_a_cpu(){
+void mandar_mensajes(){
+    sleep(10);
     enviar_mensaje("Hola CPU, soy memoria", fd_cpu);
+    enviar_mensaje("Hola KERNEL, soy memoria", fd_kernel);
+    enviar_mensaje("Hola E/S, soy memoria", fd_es);   
 }
 
 int main(int argc, char* argv[]) {
@@ -44,14 +47,14 @@ int main(int argc, char* argv[]) {
     }
     pthread_detach(hilo_es);
 
-    sleep(10);
     pthread_t hilo_mensaje_a_cpu;
-    err = pthread_create(&hilo_mensaje_a_cpu,NULL,(void*)mandar_mensaje_a_cpu,NULL);
+    err = pthread_create(&hilo_mensaje_a_cpu,NULL,(void*)mandar_mensajes,NULL);
     if (err!=0){
         perror("Fallo de creación de hilo_mensaje_a_cpu(memoria)\n");
         return -3;
     }
     pthread_detach(hilo_mensaje_a_cpu);
+
 
     pthread_t hilo_kernel;
     err = pthread_create(&hilo_kernel,NULL,(void*)esperar_kernel_memoria,NULL);
@@ -60,8 +63,6 @@ int main(int argc, char* argv[]) {
         return -3;
     }
     pthread_join(hilo_kernel,NULL);
-
-
     
     //int fd_kernel = iniciar_servidor()
 

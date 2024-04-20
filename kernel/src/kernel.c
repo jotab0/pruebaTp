@@ -3,6 +3,14 @@
 // SERVIDOR DE: ENTRADASALIDA
 // CLIENTE DE: MEMORIA, CPU 
 
+void mandar_mensajes(){
+    sleep(10);
+    enviar_mensaje("Hola CPU dispatch, soy KERNEL",fd_cpu_dispatch);
+    enviar_mensaje("Hola CPU itnerrupt, soy KERNEL",fd_cpu_interrupt);
+    enviar_mensaje("Hola memoria, soy KERNEL",fd_memoria);
+    enviar_mensaje("Hola E/S, soy KERNEL",fd_entradasalida);
+}
+
 int main(int argc, char* argv[]) {
    
     //Inicializa Kernel
@@ -41,6 +49,14 @@ int main(int argc, char* argv[]) {
         return -3;
     }
     pthread_detach(hilo_cpu_interrupt);
+
+    pthread_t hilo_mensajes;
+    err = pthread_create(&hilo_mensajes,NULL,(void*)mandar_mensajes,NULL);
+    if (err!=0){
+        perror("Fallo de creación de hilo_mensaje_a_cpu(memoria)\n");
+        return -3;
+    }
+    pthread_detach(hilo_mensajes);
 
     //Atender los mensajes de EntradaSalida
 

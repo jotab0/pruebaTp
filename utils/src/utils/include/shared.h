@@ -8,37 +8,96 @@
 #include <signal.h>
 #include <unistd.h>
 #include <sys/socket.h>
+#include <pthread.h>
 #include <netdb.h>
 #include <string.h>
+#include <semaphore.h>
 
 #include <commons/log.h> 
 #include <commons/config.h>  // de esta manera agregamos librerías de las commons
 
 typedef enum {
-    MENSAJE,
+    
     PAQUETE,
+    
     HANDSHAKE,
     RTA_HANDSHAKE,
-      //KERNEL-MEMORIA
+    //**KERNEL-MEMORIA**
     CREAR_PROCESO,
-    RTA_CREAR_PROCESO
+    RTA_CREAR_PROCESO,
+    INICIAR_ESTRUCTURA,
+    RTA_INICIAR_ESTRUCTURA,
+    LIBERAR_ESTRUCTURAS,
     // SEPARAR SEGUN TIPO:
-    //KERNEL-CPU
-    //KERNEL-ES
-    //ES-MEMORIA
-    //CPU-MEMORIA
+    //**KERNEL-CPU**
+    EJECUTAR_PROCESO_KCPU,
+    INTERRUPCION,
+    ATENDER_INSTRUCCION_CPU,
+    ATENDER_INTERRUPCION,
+    WAIT_KCPU,
+    SIGNAL_KCPU,
+
+    //**KERNEL-ES**
+    HANDSHAKE_K_ES,
+    RESPUESTA_INSTRUCCION_KES,
+
+    //**ES-MEMORIA**
+
+    //**CPU-MEMORIA**
+    SOLICITUD_INFO_MEMORIA,
+    SOLICITUD_INSTRUCCION,
+    SOLICITUD_EJECUCION,
+    SOLICITUD_CONSULTA_PAG,
+    SOLICITUD_LECTURA_MEMORIA_BLOQUE,
+    SOLICITUD_ESCRITURA_MEMORIA_BLOQUE,
+    MENSAJE,
 }op_code;
 
-typedef struct 
-{
+typedef struct {
     int size;
-    void* stream;
+    void* stream; // TAM + MSJE + ...
 }t_buffer;
+
+typedef enum {
+    QUANTUM_INTERRUPT,
+    EXIT_PROCESS
+}interrupcion;
+
+typedef enum{
+	OK,
+	ERROR
+}resultado_operacion;
 
 typedef struct{
     op_code codigo_operacion;
     t_buffer* buffer;
 }t_paquete;
+
+typedef enum{
+	MEMORIA,
+	FILESYSTEM,
+	CPU,
+	KERNEL
+}modulo_identificador;
+
+typedef enum{
+	IO_GEN_SLEEP,
+    IO_STDIN_READ,
+    IO_FS_CREATE,
+    IO_FS_DELETE,
+    IO_FS_TRUNCATE,
+    IO_FS_WRITE,
+    IO_FS_READ,
+    IO_STDOUT_WRITE,
+    INSTRUCCION_IO_NO_DEFINIDA
+
+}instruccion_interfaz;
+
+typedef struct{
+	char* pseudo_codigo;
+    char* primer_parametro;
+    char* segundo_parametro;
+}t_instruccion_codigo;
 
 
 
@@ -56,17 +115,25 @@ void* extraer_mensaje_de_buffer(t_buffer* buffer);
 int extraer_int_del_buffer(t_buffer* buffer);
 char* extraer_string_del_buffer(t_buffer* buffer);
 uint32_t extraer_uint32_del_buffer(t_buffer* buffer);
-t_paquete* crear_paquete_con_buffer(op_code codigo_operacion, t_buffer* buffer);
 void destruir_paquete(t_paquete* paquete);
 void* serializar_paquete(t_paquete* paquete);
 void enviar_paquete(t_paquete* paquete, int fd);
-void* recibir_buffer(int socket_cliente);
+t_buffer* recibir_buffer(int socket_cliente);
 // LITERAL tp0
 void recibir_mensaje_tp0(int socket_cliente, t_log* logger);
 t_list* recibir_paquete(int socket_cliente);
 void enviar_mensaje(char* mensaje, int socket_cliente);
-void* serializar_paquete_tp0(t_paquete* paquete, int bytes);
 void* recibir_buffer_tp0(int* size, int socket_cliente);
 void eliminar_paquete(t_paquete* paquete);
+t_paquete* crear_paquete_con_buffer(op_code codigo_operacion);
+void crear_buffer_en_paquete(t_paquete* paquete);
+void cargar_int_a_paquete(t_paquete* paquete, int valor);
+void cargar_uint32_a_paquete(t_paquete* paquete, uint32_t valor);
+void cargar_string_a_paquete(t_paquete* paquete, char* string);
+//FUNCIONES VARIAS
+void ejecutar_en_hilo_detach(void (*una_funcion)(void*) ,void* struct_argumento);
+void ejecutar_en_hilo_join(void (*f)(void*) ,void* struct_arg);
+t_buffer* recibir_un_paquete(int conexion);
+
 
 #endif

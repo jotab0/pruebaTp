@@ -111,9 +111,14 @@ void esperar_cpu_dispatch_kernel(){
 			un_pcb = list_remove(execute,0);
 			pthread_mutex_unlock(&mutex_lista_exec);
 
+			log_info(kernel_logger,"Contexto antes de actualización");
+			mostrar_contexto(un_pcb);
 			obtener_contexto_pcb(un_buffer,un_pcb);
+			log_info(kernel_logger,"Contexto luego de actualización");
+			mostrar_contexto(un_pcb);
 
 			agregar_a_ready(un_pcb);
+			
 			sem_post(&sem_pcp);
 			sem_post(&sem_cpu_libre);
 
@@ -123,13 +128,15 @@ void esperar_cpu_dispatch_kernel(){
 
 			un_buffer = recibir_buffer(fd_cpu_dispatch);
 
+			un_pcb = list_get(execute,0);
+
+			log_info(kernel_logger,"Solicitud proceso con PID: %d - EXIT",un_pcb->pid);
 			obtener_contexto_pcb(un_buffer,un_pcb);
 
 			cambiar_estado_pcb(un_pcb,EXIT);
 
+			log_info(kernel_logger,"Planificando proceso con PID: %d - EXIT",un_pcb->pid);
 			planificar_proceso_exit_en_hilo(un_pcb);
-
-			sem_post(&sem_cpu_libre);
 			
 		break;
 
@@ -164,8 +171,23 @@ void enviar_pcb_CPU_dispatch(pcb* un_pcb){
 	cargar_uint32_a_paquete(un_paquete, un_pcb->registros_CPU->BX);
 	cargar_uint32_a_paquete(un_paquete, un_pcb->registros_CPU->CX);
 	cargar_uint32_a_paquete(un_paquete, un_pcb->registros_CPU->DX);
+	cargar_uint32_a_paquete(un_paquete, un_pcb->registros_CPU->SI);
+	cargar_uint32_a_paquete(un_paquete, un_pcb->registros_CPU->DI);
+	
+
+	log_info(kernel_logger,"PID: %d", un_pcb->pid);
+	log_info(kernel_logger,"PC: %d", un_pcb->program_counter);
+	log_info(kernel_logger,"TIEMPO EJECUTADO: %d", un_pcb->tiempo_ejecutado);
+	log_info(kernel_logger,"TICKET: %d", un_pcb->ticket);
+	log_info(kernel_logger,"DX: %d", un_pcb->registros_CPU->DX);
+    log_info(kernel_logger,"AX: %d", un_pcb->registros_CPU->AX);
+	log_info(kernel_logger,"CX: %d", un_pcb->registros_CPU->CX);
+	log_info(kernel_logger,"BX: %d", un_pcb->registros_CPU->BX);
+	log_info(kernel_logger,"SI: %d", un_pcb->registros_CPU->SI);
+	log_info(kernel_logger,"DI: %d", un_pcb->registros_CPU->DI);
 
 	enviar_paquete(un_paquete, fd_cpu_dispatch); 
+	log_info(kernel_logger,"Proceso enviado");
 	destruir_paquete(un_paquete);
 }
 

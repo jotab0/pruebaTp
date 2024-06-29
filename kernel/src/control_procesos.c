@@ -13,7 +13,13 @@ pcb *crear_pcb(char *path)
 
 	nuevo_PCB->ticket = -1; // Inicializa en -1 porque el valor del primer ticket global es 0
 
-	nuevo_PCB->path = path; 
+	nuevo_PCB->path = malloc(sizeof(strlen(path) + 1)); 
+
+	if (nuevo_PCB->path != NULL) {
+    strcpy(nuevo_PCB->path, path);
+	}else{
+		exit(EXIT_FAILURE);
+	}
 
 	nuevo_PCB->registros_CPU = malloc(sizeof(registrosCPU));
 	nuevo_PCB->registros_CPU->AX = 0;
@@ -58,6 +64,7 @@ void planificador_largo_plazo()
 		// - Consola
 		// - Propio PLP
 		sem_wait(&sem_lista_new);
+		log_info(kernel_logger,"PLP: Planificando");
 
 		pcb *un_pcb = NULL;
 
@@ -70,16 +77,12 @@ void planificador_largo_plazo()
 
 			// Envía la orden de iniciar estructura a memoria y espera con semáforo a que memoria la cree
 			iniciar_estructura_en_memoria(un_pcb);
-
+			log_info(kernel_logger,"PLP: Planificando");
 			if (flag_respuesta_creacion_proceso == 0) 
 			{
 
-				// Vuelvo a agregar el pcb a la lista new en caso de que falló creación de proceso
-				pthread_mutex_lock(&mutex_lista_new);
-				list_add(new, un_pcb);
-				pthread_mutex_lock(&mutex_lista_new);
-
-				sem_post(&sem_lista_new);
+				log_info(kernel_logger,"No se pudo asignar memoria para el proceso con PID: %d",un_pcb->pid);
+				
 				// Reinicio la bendera
 				flag_respuesta_creacion_proceso = 1; // Asumo que no necesito mutex porque plp es el único que accede a este flag y son ejecuciones secuenciales
 
@@ -156,7 +159,9 @@ void planificador_corto_plazo()
 		// - Fin de instrucción IO
 		// - Volver de pedido de recurso
 		// - Volver por fin de Q
+		log_info(kernel_logger,"PCP: Esperando señal para planificar");
 		sem_wait(&sem_pcp);
+		log_info(kernel_logger,"PCP: Esperando a que la CPU esté libre");
 
 		// Es señalizado por:
 		// - Salida por fin de Q
@@ -164,6 +169,7 @@ void planificador_corto_plazo()
 		// - Salida por pedido de instrucción IO
 		// - Salida por WAIT
 		sem_wait(&sem_cpu_libre);
+		log_info(kernel_logger,"PCP: Planificando");
 
 		planificar_corto_plazo();
 
@@ -177,7 +183,8 @@ void planificar_corto_plazo()
 	pthread_mutex_lock(&mutex_lista_exec);
 
 	if (list_is_empty(execute))
-	{ // ESTO NO SÉ SI LO NECESITO CON EL SEMÁFORO sem_cpu_libre, CONSULTAR
+	{
+
 		pthread_mutex_unlock(&mutex_lista_exec);
 		pcb *un_pcb = NULL;
 
@@ -196,8 +203,12 @@ void planificar_corto_plazo()
 		pthread_mutex_unlock(&mutex_lista_ready_plus);
 
 		_poner_en_ejecucion(un_pcb);
-	}else{
+
+	}
+	else{
+
 		pthread_mutex_unlock(&mutex_lista_exec);
+
 	}
 }
 
@@ -206,12 +217,10 @@ void _poner_en_ejecucion(pcb *un_pcb)
 
 	if (un_pcb != NULL)
 	{
-		pthread_mutex_lock(&mutex_lista_exec);
-		list_add(execute, un_pcb);
-		cambiar_estado_pcb(un_pcb, EXEC);
-		pthread_mutex_unlock(&mutex_lista_exec);
-
+		
+		list_add_pcb_sync(execute,un_pcb,&mutex_lista_exec,EXEC);
 		log_info(kernel_logger, " PID: %d - SET: EXEC", un_pcb->pid);
+
 		un_pcb->ticket = generar_ticket();
 
 		enviar_pcb_CPU_dispatch(un_pcb);
@@ -248,12 +257,14 @@ void _programar_interrupcion_por_quantum_RR(pcb *un_pcb)
 
 void _programar_interrupcion_por_quantum_VRR(pcb *un_pcb)
 {
+	log_info(kernel_logger,"Programando interrupción por VRR");
 	int ticket_referencia = un_pcb->ticket;
 	int tiempo_restante = un_pcb->quantum - un_pcb->tiempo_ejecutado; // Consultar si está ok
 	usleep(tiempo_restante);										  // El tiempo debe ser calculado en base a microsegundos
 	pthread_mutex_lock(&mutex_ticket);
 	if (ticket_referencia == ticket_actual)
 	{
+		log_info(kernel_logger,"Enviando interrupción a CPU por fin de Quantum");
 		_gestionar_interrupcion(un_pcb, QUANTUM_INTERRUPT);
 	}
 	pthread_mutex_unlock(&mutex_ticket);

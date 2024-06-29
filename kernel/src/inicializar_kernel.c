@@ -30,7 +30,7 @@ void inicializar_logs(){
 
 void inicializar_configs(){
     
-    kernel_config = config_create("/home/utnso/Documents/tp-2024-1c-ubuntunel/kernel/Kernel.config");
+    kernel_config = config_create("/home/utnso/Documents/BACKUPS_TP/tpPruebas/kernel/Kernel.config");
 
 	if (kernel_config == NULL) {
         perror ("No se pudo crear el config para el módulo kernel");
@@ -44,6 +44,7 @@ void inicializar_configs(){
         PUERTO_CPU_INTERRUPT = config_get_string_value(kernel_config,"PUERTO_CPU_INTERRUPT");
         ALGORITMO_PLANIFICACION = config_get_string_value(kernel_config,"ALGORITMO_PLANIFICACION");
         QUANTUM = config_get_int_value(kernel_config,"QUANTUM") * 1000; 
+        log_info(kernel_logger, "QUANTUM: %d", QUANTUM);
         RECURSOS = config_get_array_value(kernel_config,"RECURSOS");
         INSTANCIAS_RECURSOS = config_get_array_value(kernel_config,"INSTANCIAS_RECURSOS");
         GRADO_MULTIPROGRAMACION = config_get_int_value(kernel_config,"GRADO_MULTIPROGRAMACION");

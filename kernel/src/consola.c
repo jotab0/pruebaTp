@@ -63,11 +63,11 @@ if(strcmp(comando_consola[0], "INICIAR_PROCESO") == 0){
     pcb* nuevo_pcb = crear_pcb(comando_consola[1]);
     
     // CORRECCION PENDIENTE: Debería hacer free?
-    pthread_mutex_lock(&mutex_lista_new);
-    list_add(new,nuevo_pcb);
-	pthread_mutex_unlock(&mutex_lista_new);
+    list_add_pcb_sync(new,nuevo_pcb,&mutex_lista_new,NEW);
+	
 
-    printf("Se ha creado proceso con PID: %d\n",nuevo_pcb->pid);
+    log_info(kernel_logger,"Se ha creado proceso con PID: %d",nuevo_pcb->pid);
+    log_info(kernel_logger,"Se ha creado proceso con path: %s",nuevo_pcb->path);
     sem_post(&sem_lista_new);
 
 }else if(strcmp(comando_consola[0], "FINALIZAR_PROCESO") == 0){
@@ -75,6 +75,8 @@ if(strcmp(comando_consola[0], "INICIAR_PROCESO") == 0){
     // [FINALIZAR_PROCESO] [PID]
     // Debe liberar recursos, archivos y memoria
     int pid_buscado = atoi(comando_consola[1]);
+    log_info(kernel_logger,"Se solicitó eliminar proceso con PID: %d",pid_buscado);
+    
     pcb* un_pcb = buscar_pcb_en_sistema_(pid_buscado);
 
     if(un_pcb == NULL){

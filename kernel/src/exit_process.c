@@ -8,15 +8,18 @@ void planificar_proceso_exit_en_hilo(pcb* un_pcb){
 //QUIZÁS SERÍA MEJOR QUE YO LE PASE EL ESTADO Y NO SE LO PREGUNTE AL PCB
 void planificar_proceso_exit(pcb *un_pcb) 
 {
+	pcb* pcb_sistema = NULL;
+	
 	switch (un_pcb->estado)
 	{
 
 	case NEW:
 
-		if (_eliminar_pcb_de_lista_sync(un_pcb, new, &mutex_lista_new))
+		pcb_sistema = _eliminar_pcb_de_lista_sync(un_pcb, new, &mutex_lista_new);
+		if (pcb_sistema != NULL)
 		{	
 			agregar_int_a_lista(lista_exit,un_pcb->pid);
-			destruir_pcb(un_pcb);
+			destruir_pcb(pcb_sistema);
 		}
 
 		break;
@@ -27,21 +30,28 @@ void planificar_proceso_exit(pcb *un_pcb)
 		{
 		case VRR:
 
-			if (_eliminar_pcb_de_lista_sync(un_pcb, ready, &mutex_lista_ready)){
+			pcb_sistema = _eliminar_pcb_de_lista_sync(un_pcb, ready, &mutex_lista_ready);
+
+			if (pcb_sistema != NULL){
 			
-				_gestionar_salida(un_pcb);
+				_gestionar_salida(pcb_sistema);
 
-			}else if (_eliminar_pcb_de_lista_sync(un_pcb, ready_plus, &mutex_lista_ready_plus)){
+			}else{
 
-				_gestionar_salida(un_pcb);
-				
+				pcb_sistema = _eliminar_pcb_de_lista_sync(un_pcb, ready_plus, &mutex_lista_ready_plus);
+				if (pcb_sistema != NULL)
+				{
+					_gestionar_salida(pcb_sistema);
+				}
+
 			}
 			break;
 
 		default:
 
-			if (_eliminar_pcb_de_lista_sync(un_pcb, ready, &mutex_lista_ready)){
-				_gestionar_salida(un_pcb);
+			pcb_sistema = _eliminar_pcb_de_lista_sync(un_pcb, ready, &mutex_lista_ready);
+			if (pcb_sistema != NULL){
+				_gestionar_salida(pcb_sistema);
 			}
 			break;
 		}
@@ -50,8 +60,9 @@ void planificar_proceso_exit(pcb *un_pcb)
 
 	case BLOCKED:
 
-		if (_eliminar_pcb_de_lista_sync(un_pcb, blocked, &mutex_lista_blocked)){
-			_gestionar_salida(un_pcb);
+		pcb_sistema = _eliminar_pcb_de_lista_sync(un_pcb, blocked, &mutex_lista_blocked);
+		if (pcb_sistema != NULL){
+			_gestionar_salida(pcb_sistema);
 		}
 
 		break;
@@ -64,8 +75,11 @@ void planificar_proceso_exit(pcb *un_pcb)
 
 	case EXIT: 
 
-		if (_eliminar_pcb_de_lista_sync(un_pcb, execute, &mutex_lista_exec)){
-			_gestionar_salida(un_pcb);
+		log_info(kernel_logger,"Eliminando del sistema y liberando estructuras de proceso con PID: %d", un_pcb->pid);
+		pcb_sistema = _eliminar_pcb_de_lista_sync(un_pcb, execute, &mutex_lista_exec);
+		sem_post(&sem_cpu_libre);
+		if (pcb_sistema != NULL){
+			_gestionar_salida(pcb_sistema);
 		}
 
 		break;
@@ -75,10 +89,13 @@ void planificar_proceso_exit(pcb *un_pcb)
 		exit(EXIT_FAILURE);
 		break;
 	}
+
+
 }
 
 void _gestionar_salida(pcb* un_pcb){
 
+	log_info(kernel_logger,"Gestionando salida de proceso con PID: %d", un_pcb->pid);
 	agregar_int_a_lista(lista_exit,un_pcb->pid);
 	liberar_recursos_pcb(un_pcb);
 	destruir_pcb(un_pcb);

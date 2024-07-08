@@ -15,6 +15,7 @@ void esperar_kernel_cpu_interrupt(){
 		 	recibir_mensaje_tp0(fd_kernel_interrupt,cpu_logger);
 			break;
 
+		
 		case EXIT_PROCESS:
 			t_buffer* un_buffer = recibir_buffer(fd_kernel_interrupt);
 			int pid = extraer_int_del_buffer(un_buffer);

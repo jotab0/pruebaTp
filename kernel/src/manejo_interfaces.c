@@ -77,7 +77,7 @@ void control_request_de_interfaz(interfaz* una_interfaz){
 		// Se le envía signal solamente cuando algún proceso hace la request del recurso
 		sem_wait(&una_interfaz->sem_request_interfaz);
 
-		// Se le envía señal cada vez que se libera interfaz
+		// Se le envía señal cada vez que se libera interfaz (inicia en 1)
 		sem_wait(&una_interfaz->sem_interfaz);
 
 		pcb* un_pcb = NULL;

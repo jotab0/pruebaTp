@@ -53,7 +53,14 @@ void esperar_entradasalida_kernel(int* fd_conexion_entradasalida){
 			interfaz* nueva_interfaz = NULL;
 			nueva_interfaz = _crear_instancia_interfaz(buffer,fd_conexion_entradasalida);
 
+			log_info(kernel_logger,"Se ha creado la interfaz: %s", nueva_interfaz->nombre_interfaz);
+			mostrar_instrucciones(nueva_interfaz);
+
 			list_add_sync(interfaces_conectadas,nueva_interfaz,&mutex_lista_interfaces);
+
+			int tamanio_lista = list_size(interfaces_conectadas);
+			log_info(kernel_logger,"Cantidad de interfaces conectadas: %d", tamanio_lista);
+			
 			ejecutar_en_hilo_detach((void*)control_request_de_interfaz,nueva_interfaz);
 			
 			destruir_buffer(buffer);
@@ -80,15 +87,17 @@ void esperar_entradasalida_kernel(int* fd_conexion_entradasalida){
 
 interfaz* _crear_instancia_interfaz(t_buffer* buffer, int* fd_conexion_entradasalida){ // CONSULTAR: Si está bien creada la instancia 
 	
-	interfaz* una_interfaz = malloc(sizeof(interfaz)); 
+	interfaz* una_interfaz = malloc(sizeof(interfaz));
 	
 	una_interfaz->nombre_interfaz = extraer_string_del_buffer(buffer);
 	una_interfaz->resultado_operacion_solicitada = OK;
 	una_interfaz->instrucciones_disponibles = list_create();
 	
 	while(buffer->size > 0){
-		instruccion_interfaz una_instruccion = extraer_int_del_buffer(buffer);
-		list_add(una_interfaz->instrucciones_disponibles,&una_instruccion);
+		instruccion_interfaz* una_instruccion = malloc(sizeof(instruccion_interfaz));
+		*una_instruccion = extraer_int_del_buffer(buffer);
+		list_add(una_interfaz->instrucciones_disponibles,una_instruccion);
+		log_info(kernel_logger,"Agregando instrucción %d", *una_instruccion);
 	} 
 	
 	una_interfaz->fd_conexion=fd_conexion_entradasalida;
@@ -266,5 +275,57 @@ interfaz* _obtener_interfaz_con_nombre(char* nombre_interfaz){
 		log_error(kernel_logger,"Se solicitó interfaz que ya no se encuentra conectada");
 		// En este caso retorna NULL
 		return NULL;
+	}
+}
+
+void mostrar_instrucciones(interfaz* una_interfaz){
+	
+	instruccion_interfaz* instruccion = NULL;
+	int tamanio_lista = list_size(una_interfaz->instrucciones_disponibles);
+	log_info(kernel_logger,"Mostrando instrucciones de la siguiente interfaz: %s", una_interfaz->nombre_interfaz);
+	for (int i = 0; i < tamanio_lista; i++)
+	{	
+		instruccion = (instruccion_interfaz*)list_get(una_interfaz->instrucciones_disponibles,i);
+		log_info(kernel_logger,"Traducioendo isntruccion: %d", *instruccion);
+			
+		switch (*instruccion)
+		{
+			
+			case IO_GEN_SLEEP:
+				log_info(kernel_logger,"IO_GEN_SLEEP");
+				break;
+			
+			case IO_STDIN_READ:
+				log_info(kernel_logger,"IO_STDIN_SLEEP");
+				break;
+
+			case IO_STDOUT_WRITE:
+				log_info(kernel_logger,"IO_STDOUT_WRITE");
+				break;
+
+			case IO_FS_CREATE:
+				log_info(kernel_logger,"IO_FS_CREATE");
+				break;
+
+			case IO_FS_DELETE:
+				log_info(kernel_logger,"IO_FS_DELETE");
+				break;
+
+			case IO_FS_TRUNCATE:
+				log_info(kernel_logger,"IO_FS_TRUNCATE");
+				break;	
+
+			case IO_FS_WRITE:
+				log_info(kernel_logger,"IO_FS_WRITE");
+				break;
+
+			case IO_FS_READ:
+				log_info(kernel_logger,"IO_FS_READ");
+				break;
+
+			default:
+				log_info(kernel_logger,"INSTRUCCIÓN DESCONOCIDA");
+				break;
+		}
 	}
 }

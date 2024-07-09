@@ -199,5 +199,31 @@ void hilo_extra_funciones(){
 	cargar_int_a_paquete(un_paquete, 0);
 
 	enviar_paquete(un_paquete,fd_kernel_dispatch);
+
+	sleep(2);
+	un_paquete = crear_paquete_con_buffer(ATENDER_INSTRUCCION_CPU);
+	cargar_int_a_paquete(un_paquete, IO_GEN_SLEEP);
+	cargar_string_a_paquete(un_paquete, "una_interfaz");
+	cargar_int_a_paquete(un_paquete,5);
+
+	// Datos auxiliares
+	cargar_int_a_paquete(un_paquete,5);
+
+	// Contexto pcb
+	cargar_int_a_paquete(un_paquete, 2); // Recordar que deben coincidir
+
+	cargar_int_a_paquete(un_paquete, 15);
+
+	cargar_int_a_paquete(un_paquete, 0);
+	cargar_int_a_paquete(un_paquete, 0);
+	cargar_int_a_paquete(un_paquete, 0);
+	cargar_int_a_paquete(un_paquete, 0);
+	cargar_int_a_paquete(un_paquete, 0);
+	cargar_int_a_paquete(un_paquete, 0);
+
+	cargar_int_a_paquete(un_paquete, 0);
+
+	enviar_paquete(un_paquete,fd_kernel_dispatch);
+
 	destruir_paquete(un_paquete);
 }

@@ -116,9 +116,9 @@ interfaz* _crear_instancia_interfaz(t_buffer* buffer, int* fd_conexion_entradasa
 }
 
 int solicitar_instruccion_a_interfaz(pcb* un_pcb, interfaz* una_interfaz){
-	
+
 	t_paquete* paquete = NULL;
-	
+
 	paquete = crear_paquete_con_buffer(un_pcb->pedido_a_interfaz->instruccion_a_interfaz);
 	
 	cargar_datos_auxiliares_en_paquete(un_pcb->pedido_a_interfaz->instruccion_a_interfaz,un_pcb,paquete);
@@ -129,6 +129,7 @@ int solicitar_instruccion_a_interfaz(pcb* un_pcb, interfaz* una_interfaz){
 	sem_post(&una_interfaz->sem_interfaz);  
 
 	return una_interfaz->resultado_operacion_solicitada;
+	
 }
 
 void cargar_datos_auxiliares_en_paquete(instruccion_interfaz instruccion, pcb* un_pcb, t_paquete* un_paquete){

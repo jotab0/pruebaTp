@@ -105,7 +105,7 @@ void planificador_largo_plazo()
 		}
 		else
 		{
-			log_warning(kernel_logger, "Lista ready vacía");
+			log_warning(kernel_logger, "Lista NEW vacía");
 		}
 	}
 }
@@ -206,7 +206,7 @@ void planificar_corto_plazo()
 
 	}
 	else{
-
+		
 		pthread_mutex_unlock(&mutex_lista_exec);
 
 	}
@@ -236,7 +236,8 @@ void _poner_en_ejecucion(pcb *un_pcb)
 	}
 	else
 	{
-		log_warning(kernel_logger, "Lista READY vacía");
+		log_warning(kernel_logger, "Se intento _poner_en_ejecucion pero la lista READY está vacía");
+		sem_post(&sem_cpu_libre);
 	}
 }
 

@@ -46,6 +46,8 @@ void esperar_kernel_es(){
 			cargar_string_a_paquete(un_paquete,nombre_interfaz);
 			cargar_int_a_paquete(un_paquete,OK);
 
+			sleep(10);
+
 			enviar_paquete(un_paquete,fd_kernel);
 			destruir_paquete(un_paquete);
 		

@@ -89,13 +89,14 @@ void control_request_de_interfaz(interfaz* una_interfaz){
 		pthread_mutex_unlock(&una_interfaz->mutex_interfaz);
 
 		log_trace(kernel_logger, "Atendiendo solicitud de PCB con PID: %d",un_pcb->pid);
+		int pid = un_pcb->pid;
 
 		resultado_operacion resultado_de_operacion = solicitar_instruccion_a_interfaz(un_pcb,una_interfaz);
 		switch(resultado_de_operacion){
 
 			case OK:
 			
-				if(_eliminar_pcb_de_lista_sync(un_pcb,blocked,&mutex_lista_blocked)){
+				if(_eliminar_pcb_de_lista_sync(un_pcb,blocked,&mutex_lista_blocked) != NULL){
 					list_clean(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz); // Debería limpiar memoria
 					un_pcb->pedido_a_interfaz->instruccion_a_interfaz = INSTRUCCION_IO_NO_DEFINIDA;
 					free(un_pcb->pedido_a_interfaz->nombre_interfaz);
@@ -105,19 +106,28 @@ void control_request_de_interfaz(interfaz* una_interfaz){
 					agregar_a_ready(un_pcb);
 					sem_post(&sem_pcp);
 				}
+				else{
+					log_warning(kernel_logger, "Se ha eliminado un proceso antes de recibir respuesta de interfaz");
+					sem_post(&sem_pcp);
+				}
 				
 			break;
 
 			case ERROR:
+				pcb* pcb_buscado = buscar_pcb_en_sistema_(pid);
+				if(pcb_buscado != NULL){
+					// Lo hago de esta manera para la lógica de liberación de recursos, porque ya no está en la lista de la interafaz
+					list_clean(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz);
+					un_pcb->pedido_a_interfaz->instruccion_a_interfaz = INSTRUCCION_IO_NO_DEFINIDA;
+					free(un_pcb->pedido_a_interfaz->nombre_interfaz);
+					un_pcb->pedido_a_interfaz->nombre_interfaz = NULL;
+					
+					planificar_proceso_exit_en_hilo(un_pcb);
+				}else{
+					log_warning(kernel_logger, "Se ha eliminado un proceso antes de recibir respuesta de interfaz");
+				}
 				
-				// Lo hago de esta manera para la lógica de liberación de recursos, porque ya no está en la lista de la interafaz
-				list_clean(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz);
-				un_pcb->pedido_a_interfaz->instruccion_a_interfaz = INSTRUCCION_IO_NO_DEFINIDA;
-				free(un_pcb->pedido_a_interfaz->nombre_interfaz);
-				un_pcb->pedido_a_interfaz->nombre_interfaz = NULL;
 				
-				planificar_proceso_exit_en_hilo(un_pcb);
-
 			break;
 		}
 		

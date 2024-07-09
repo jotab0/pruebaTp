@@ -114,15 +114,16 @@ void control_request_de_interfaz(interfaz* una_interfaz){
 			break;
 
 			case ERROR:
+				// Lo hago de esta manera para la lógica de liberación de recursos, porque ya no está en la lista de la interafaz
 				pcb* pcb_buscado = buscar_pcb_en_sistema_(pid);
 				if(pcb_buscado != NULL){
-					// Lo hago de esta manera para la lógica de liberación de recursos, porque ya no está en la lista de la interafaz
-					list_clean(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz);
+
 					un_pcb->pedido_a_interfaz->instruccion_a_interfaz = INSTRUCCION_IO_NO_DEFINIDA;
 					free(un_pcb->pedido_a_interfaz->nombre_interfaz);
 					un_pcb->pedido_a_interfaz->nombre_interfaz = NULL;
 					
 					planificar_proceso_exit_en_hilo(un_pcb);
+
 				}else{
 					log_warning(kernel_logger, "Se ha eliminado un proceso antes de recibir respuesta de interfaz");
 				}

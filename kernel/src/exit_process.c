@@ -61,6 +61,7 @@ void planificar_proceso_exit(pcb *un_pcb)
 	case BLOCKED:
 
 		pcb_sistema = _eliminar_pcb_de_lista_sync(un_pcb, blocked, &mutex_lista_blocked);
+		log_info(kernel_logger,"MODULO - exit_process: Gestionando exit - Proceso: %d, Estado: Blocked",pcb_sistema->pid);
 		if (pcb_sistema != NULL){
 			_gestionar_salida(pcb_sistema);
 		}

@@ -239,28 +239,33 @@ void limpiar_interfaz(int *fd_interfaz){
 
 	interfaz* una_interfaz = NULL;
 	pthread_mutex_lock(&mutex_lista_interfaces);
-	una_interfaz = list_remove_by_condition(interfaces_conectadas,(void *)_coincide_fd);
+	una_interfaz = list_find(interfaces_conectadas,(void *)_coincide_fd);
 	pthread_mutex_unlock(&mutex_lista_interfaces);
 
 	if(una_interfaz != NULL){
 
 		pthread_mutex_lock(&una_interfaz->mutex_interfaz);
+
+		una_interfaz->resultado_operacion_solicitada = ERROR;
+		sem_post(&una_interfaz->sem_instruccion_interfaz);
+
 		int tamanio_lista_pcbs = list_size(una_interfaz->lista_procesos_en_cola);
 		for(int i = 0;i<tamanio_lista_pcbs;i++){
 			pcb* un_pcb = list_remove(una_interfaz->lista_procesos_en_cola,i);
-			list_destroy(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz);
-			free(un_pcb->pedido_a_interfaz);
-			un_pcb->pedido_a_interfaz = NULL;
+			un_pcb->pedido_a_interfaz->instruccion_a_interfaz = INSTRUCCION_IO_NO_DEFINIDA;
+			free(un_pcb->pedido_a_interfaz->nombre_interfaz);
+			un_pcb->pedido_a_interfaz->nombre_interfaz = NULL;
 			planificar_proceso_exit_en_hilo(un_pcb);
-			sleep(1);
+			sleep(20);
 		}
 
+		una_interfaz = list_remove_by_condition(interfaces_conectadas,(void *)_coincide_fd);
 		list_destroy(una_interfaz->instrucciones_disponibles);
 		list_destroy(una_interfaz->lista_procesos_en_cola);
 		free(una_interfaz->fd_conexion);
 		pthread_mutex_unlock(&una_interfaz->mutex_interfaz);
 
-		free(una_interfaz);
+		
 	}
 }
 

@@ -36,6 +36,8 @@ void esperar_entradasalida_kernel(int* fd_conexion_entradasalida){
 			char* nombre_interfaz = extraer_string_del_buffer(buffer);
 			int resultado_operacion = extraer_int_del_buffer(buffer);
 
+			log_info(kernel_logger, "Respuesta de interfaz %s recibida", nombre_interfaz);
+
 			interfaz* una_interfaz = _obtener_interfaz_con_nombre(nombre_interfaz);
 			una_interfaz->resultado_operacion_solicitada = resultado_operacion;
 
@@ -88,9 +90,13 @@ void esperar_entradasalida_kernel(int* fd_conexion_entradasalida){
 interfaz* _crear_instancia_interfaz(t_buffer* buffer, int* fd_conexion_entradasalida){ // CONSULTAR: Si está bien creada la instancia 
 	
 	interfaz* una_interfaz = malloc(sizeof(interfaz));
+
+	char* un_nombre = extraer_string_del_buffer(buffer);
+	una_interfaz->nombre_interfaz = malloc(sizeof(strlen(un_nombre) + 1));
+	strcpy(una_interfaz->nombre_interfaz,un_nombre);
 	
-	una_interfaz->nombre_interfaz = extraer_string_del_buffer(buffer);
 	una_interfaz->resultado_operacion_solicitada = OK;
+	una_interfaz->lista_procesos_en_cola = list_create();
 	una_interfaz->instrucciones_disponibles = list_create();
 	
 	while(buffer->size > 0){
@@ -263,7 +269,7 @@ interfaz* _obtener_interfaz_con_nombre(char* nombre_interfaz){
 	bool _buscar_interfaz(interfaz* una_interfaz){
 		
 		char* nombre_encontrado = una_interfaz->nombre_interfaz;		
-		return strcmp(nombre_encontrado,nombre_interfaz)==1;
+		return strcmp(nombre_encontrado,nombre_interfaz)==0;
 
 	}
 
@@ -286,8 +292,6 @@ void mostrar_instrucciones(interfaz* una_interfaz){
 	for (int i = 0; i < tamanio_lista; i++)
 	{	
 		instruccion = (instruccion_interfaz*)list_get(una_interfaz->instrucciones_disponibles,i);
-		log_info(kernel_logger,"Traducioendo isntruccion: %d", *instruccion);
-			
 		switch (*instruccion)
 		{
 			

@@ -55,6 +55,14 @@ int main(void){
     }
     pthread_detach(hilo_mensajes);
 
+    pthread_t hilo_extra;
+    err = pthread_create(&hilo_extra,NULL,(void*)hilo_extra_funciones,NULL);
+    if (err!=0){
+        perror("Fallo de creación de hilo_extra(cpu)\n");
+        return -3;
+    }
+    pthread_detach(hilo_extra);
+
     pthread_t hilo_memoria;
     err = pthread_create(&hilo_memoria,NULL,(void*)esperar_memoria_cpu,NULL);
     if (err!=0){

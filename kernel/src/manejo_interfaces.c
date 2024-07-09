@@ -74,6 +74,8 @@ interfaz* _traer_interfaz_solicitada(pcb *un_pcb)
 void control_request_de_interfaz(interfaz* una_interfaz){
 	while(1){
 		
+		log_trace(kernel_logger, "%s está lista para atender instrucciones",una_interfaz->nombre_interfaz);
+		
 		// Se le envía signal solamente cuando algún proceso hace la request del recurso
 		sem_wait(&una_interfaz->sem_request_interfaz);
 
@@ -86,16 +88,20 @@ void control_request_de_interfaz(interfaz* una_interfaz){
 		un_pcb = list_remove(una_interfaz->lista_procesos_en_cola,0);
 		pthread_mutex_unlock(&una_interfaz->mutex_interfaz);
 
+		log_trace(kernel_logger, "Atendiendo solicitud de PCB con PID: %d",un_pcb->pid);
+
 		resultado_operacion resultado_de_operacion = solicitar_instruccion_a_interfaz(un_pcb,una_interfaz);
 		switch(resultado_de_operacion){
 
 			case OK:
 			
 				if(_eliminar_pcb_de_lista_sync(un_pcb,blocked,&mutex_lista_blocked)){
-					list_clean(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz);
+					list_clean(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz); // Debería limpiar memoria
 					un_pcb->pedido_a_interfaz->instruccion_a_interfaz = INSTRUCCION_IO_NO_DEFINIDA;
+					free(un_pcb->pedido_a_interfaz->nombre_interfaz);
 					un_pcb->pedido_a_interfaz->nombre_interfaz = NULL;
-
+					
+					log_trace(kernel_logger, "Agregando proceso con PID: %d nuevamente a READY",un_pcb->pid);
 					agregar_a_ready(un_pcb);
 					sem_post(&sem_pcp);
 				}
@@ -107,6 +113,7 @@ void control_request_de_interfaz(interfaz* una_interfaz){
 				// Lo hago de esta manera para la lógica de liberación de recursos, porque ya no está en la lista de la interafaz
 				list_clean(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz);
 				un_pcb->pedido_a_interfaz->instruccion_a_interfaz = INSTRUCCION_IO_NO_DEFINIDA;
+				free(un_pcb->pedido_a_interfaz->nombre_interfaz);
 				un_pcb->pedido_a_interfaz->nombre_interfaz = NULL;
 				
 				planificar_proceso_exit_en_hilo(un_pcb);

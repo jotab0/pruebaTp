@@ -326,7 +326,7 @@ void _check_interrupt_plp()
 // MANEJA PROCESOS QUE SE BLOQUEAN EN CPU
 void manejar_bloqueo_de_proceso(pcb *un_pcb)
 {
-
+	log_trace(kernel_logger,"Manejando bloqueo deproceso");
 	// Cuando CPU me pide que lo bloquee tengo que sacarlo de exec si cumple con las siguientes condiciones
 	// 		- La interfaz existe y se encuentra conectada (Tengo que tener lista de interfaces con su nombre como índice y
 	//		  luego socket correspondiente)

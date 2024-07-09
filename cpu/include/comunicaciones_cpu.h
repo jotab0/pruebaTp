@@ -6,5 +6,6 @@
 void esperar_kernel_cpu_dispatch();
 void esperar_kernel_cpu_interrupt();
 void esperar_memoria_cpu();
+void hilo_extra_funciones();
 
 #endif

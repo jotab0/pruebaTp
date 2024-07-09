@@ -62,8 +62,12 @@ void actualizar_pcb(pcb* pcb_desactualizado,pcb* pcb_nuevo){
 
 void destruir_pcb(pcb* un_pcb){
 	free(un_pcb->registros_CPU);
-	list_destroy(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz);
+	// Debería liberar memoria usada en las listas
 	list_destroy(un_pcb->recursos_en_uso);
+	list_destroy(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz); 
+	if(un_pcb->pedido_a_interfaz->nombre_interfaz != NULL){
+		free(un_pcb->pedido_a_interfaz->nombre_interfaz);
+	}
 	free(un_pcb->pedido_a_interfaz);
 	free(un_pcb);
 }

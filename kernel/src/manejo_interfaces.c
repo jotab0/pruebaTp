@@ -72,7 +72,8 @@ interfaz* _traer_interfaz_solicitada(pcb *un_pcb)
 }
 
 void control_request_de_interfaz(interfaz* una_interfaz){
-	while(1){
+
+	while(una_interfaz->estado_conexion){
 		
 		log_trace(kernel_logger, "%s está lista para atender instrucciones",una_interfaz->nombre_interfaz);
 		
@@ -131,7 +132,24 @@ void control_request_de_interfaz(interfaz* una_interfaz){
 				
 			break;
 		}
-		
 	}
 
+	liberar_interfaz(una_interfaz);
+
+}
+
+void liberar_interfaz(interfaz* una_interfaz){
+	
+	bool _coincide_fd (interfaz* otra_interfaz){
+		return otra_interfaz->fd_conexion == una_interfaz->fd_conexion;
+	}
+	
+	pthread_mutex_lock(&mutex_lista_interfaces);
+	una_interfaz = list_remove_by_condition(interfaces_conectadas,(void *)_coincide_fd);
+	pthread_mutex_unlock(&mutex_lista_interfaces);
+	list_destroy(una_interfaz->instrucciones_disponibles);
+	list_destroy(una_interfaz->lista_procesos_en_cola);
+	free(una_interfaz->fd_conexion);
+	log_info(kernel_logger,"MÓDULO - manejo_interfaces: Se ha desconectado la siguiente interfaz: %s",una_interfaz->nombre_interfaz);
+	free(una_interfaz);
 }

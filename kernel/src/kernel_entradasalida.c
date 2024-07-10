@@ -76,6 +76,7 @@ void esperar_entradasalida_kernel(int* fd_conexion_entradasalida){
 			limpiar_interfaz(fd_conexion_entradasalida);
 
 			estado_while = 0;
+
             break;
 			
 		default:
@@ -83,7 +84,6 @@ void esperar_entradasalida_kernel(int* fd_conexion_entradasalida){
 			break;
 		}
 	}
-	free(fd_conexion_entradasalida);
 }
 
 
@@ -94,7 +94,8 @@ interfaz* _crear_instancia_interfaz(t_buffer* buffer, int* fd_conexion_entradasa
 	char* un_nombre = extraer_string_del_buffer(buffer);
 	una_interfaz->nombre_interfaz = malloc(sizeof(strlen(un_nombre) + 1));
 	strcpy(una_interfaz->nombre_interfaz,un_nombre);
-	
+
+	una_interfaz->estado_conexion = 1;
 	una_interfaz->resultado_operacion_solicitada = OK;
 	una_interfaz->lista_procesos_en_cola = list_create();
 	una_interfaz->instrucciones_disponibles = list_create();
@@ -247,7 +248,6 @@ void limpiar_interfaz(int *fd_interfaz){
 		pthread_mutex_lock(&una_interfaz->mutex_interfaz);
 
 		una_interfaz->resultado_operacion_solicitada = ERROR;
-		sem_post(&una_interfaz->sem_instruccion_interfaz);
 
 		int tamanio_lista_pcbs = list_size(una_interfaz->lista_procesos_en_cola);
 		for(int i = 0;i<tamanio_lista_pcbs;i++){
@@ -256,16 +256,11 @@ void limpiar_interfaz(int *fd_interfaz){
 			free(un_pcb->pedido_a_interfaz->nombre_interfaz);
 			un_pcb->pedido_a_interfaz->nombre_interfaz = NULL;
 			planificar_proceso_exit_en_hilo(un_pcb);
-			sleep(20);
 		}
 
-		una_interfaz = list_remove_by_condition(interfaces_conectadas,(void *)_coincide_fd);
-		list_destroy(una_interfaz->instrucciones_disponibles);
-		list_destroy(una_interfaz->lista_procesos_en_cola);
-		free(una_interfaz->fd_conexion);
+		una_interfaz->estado_conexion = 0;
 		pthread_mutex_unlock(&una_interfaz->mutex_interfaz);
-
-		
+		sem_post(&una_interfaz->sem_instruccion_interfaz);
 	}
 }
 

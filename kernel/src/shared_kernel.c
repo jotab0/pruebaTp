@@ -124,7 +124,6 @@ void obtener_contexto_pcb(t_buffer* un_buffer, pcb* un_pcb){
 
 	if(un_pcb->pid == pid_recibido){
 
-		un_pcb -> pid = pid_recibido;
 		un_pcb -> program_counter = extraer_int_del_buffer(un_buffer);
 
 		un_pcb -> registros_CPU -> AX = extraer_uint32_del_buffer(un_buffer);
@@ -137,7 +136,9 @@ void obtener_contexto_pcb(t_buffer* un_buffer, pcb* un_pcb){
 		un_pcb -> tiempo_ejecutado = extraer_int_del_buffer(un_buffer);
 
 	}else{
-		log_error(kernel_logger_extra,"ERROR: Se intentó actualizar procesos con distinto PID");
+		log_error(kernel_logger_extra,"MÓDULO - shared_kernel: ERROR - Se intentó actualizar procesos con distinto PID");
+		log_error(kernel_logger_extra,"MÓDULO - shared_kernel: PID recibido: %d",pid_recibido);
+		log_error(kernel_logger_extra,"MÓDULO - shared_kernel: PID en EXECUTE: %d",un_pcb->pid);
 		exit(EXIT_FAILURE);
 	}	
 }

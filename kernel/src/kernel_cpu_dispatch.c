@@ -218,6 +218,8 @@ void extraer_datos_auxiliares(t_buffer* un_buffer,instruccion_interfaz instrucci
 			*tamanio_parametro = extraer_int_del_buffer(un_buffer);
 			list_add(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz,tamanio_parametro);
 
+			break;
+
 		case IO_STDOUT_WRITE:
 
 			// Registro dirección
@@ -229,6 +231,8 @@ void extraer_datos_auxiliares(t_buffer* un_buffer,instruccion_interfaz instrucci
 			*tamanio_parametro = extraer_int_del_buffer(un_buffer);
 			list_add(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz,parametro);
 
+			break;
+
 		case IO_FS_CREATE:
 
 			char* un_nombre = extraer_string_del_buffer(un_buffer);
@@ -236,13 +240,17 @@ void extraer_datos_auxiliares(t_buffer* un_buffer,instruccion_interfaz instrucci
 			strcpy(nombre_archivo,un_nombre);
 			list_add(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz,nombre_archivo);
 
+			break;
+
 		case IO_FS_DELETE:
 
 			un_nombre = extraer_string_del_buffer(un_buffer);
 			nombre_archivo = malloc(sizeof(strlen(un_nombre) + 1));
 			strcpy(nombre_archivo,un_nombre);
 			list_add(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz,nombre_archivo);
-		
+
+			break;
+
 		case IO_FS_TRUNCATE:
 
 			un_nombre = extraer_string_del_buffer(un_buffer);
@@ -254,6 +262,7 @@ void extraer_datos_auxiliares(t_buffer* un_buffer,instruccion_interfaz instrucci
 			*parametro = extraer_int_del_buffer(un_buffer);
 			list_add(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz,parametro);
 
+			break;
 
 		case IO_FS_WRITE:
 
@@ -273,7 +282,9 @@ void extraer_datos_auxiliares(t_buffer* un_buffer,instruccion_interfaz instrucci
 			parametro = malloc(sizeof(int));
 			*parametro = extraer_int_del_buffer(un_buffer);
 			list_add(un_pcb->pedido_a_interfaz->datos_auxiliares_interfaz,parametro);
-
+			
+			break;
+			
 		case IO_FS_READ:
 			
 			un_nombre = extraer_string_del_buffer(un_buffer);

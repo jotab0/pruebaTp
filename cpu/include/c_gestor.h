@@ -33,6 +33,8 @@ extern int fd_kernel_dispatch;
 extern int fd_kernel_interrupt;
 extern int fd_memoria;
 
+extern pthread_mutex_t mutex_proceso_actual;
+
 #endif
 
 

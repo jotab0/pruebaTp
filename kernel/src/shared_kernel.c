@@ -327,7 +327,6 @@ pcb* _extraer_pcb_de_lista_sistema(pcb* un_pcb){
 		pthread_mutex_lock(&mutex_lista_exec);
 		list_remove(execute,0);
 		pthread_mutex_unlock(&mutex_lista_exec);
-		sem_post(&sem_pcp);
 
 		break;
 

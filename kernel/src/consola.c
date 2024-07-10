@@ -43,6 +43,8 @@ bool validacion_de_instruccion_de_consola(char* leido){
         resultado_validacion = true;
     }else if(strcmp(comando_consola[0], "COMANDO") == 0){
         resultado_validacion = true;
+    }else if(strcmp(comando_consola[0], "LISTAR_RECURSOS") == 0){
+        resultado_validacion = true;
     }else{
         printf("Escriba la palabra COMANDO para volver a ver los comandos disponibles \n");
     }
@@ -154,21 +156,43 @@ if(strcmp(comando_consola[0], "INICIAR_PROCESO") == 0){
 }else if(strcmp(comando_consola[0], "PROCESO_ESTADO") == 0){
 
     // Debe listar por estado, todos los procesos en ese estado
+     printf("-------------------------------------------------\n");
     printf("Pocesos en NEW  \n");
     imprimir_procesos(new,&mutex_lista_new);
+     printf("-------------------------------------------------\n");
     printf("Pocesos en READY \n");
     imprimir_procesos(ready,&mutex_lista_ready);
+     printf("-------------------------------------------------\n");
     printf("Pocesos en READY PLUS \n");
     imprimir_procesos(ready_plus,&mutex_lista_ready_plus);
+     printf("-------------------------------------------------\n");
     printf("Poceso en EXECUTE \n");
     imprimir_procesos(execute,&mutex_lista_exec);
+     printf("-------------------------------------------------\n");
     printf("Pocesos en BLOCKED \n");
     imprimir_procesos(blocked,&mutex_lista_blocked);
+     printf("-------------------------------------------------\n");
     printf("Pocesos en EXIT \n");
     imprimir_procesos_exit(lista_exit,&mutex_lista_exit);
 
 }else if(strcmp(comando_consola[0], "COMANDO") == 0){
     imprimir_comandos();
+}else if(strcmp(comando_consola[0], "LISTAR_RECURSOS") == 0){
+    printf("-------------------------------------------------\n");
+    printf("Pocesos en NEW  \n");
+    imprimir_recursos_procesos(new,&mutex_lista_new);
+    printf("-------------------------------------------------\n");
+    printf("Pocesos en READY \n");
+    imprimir_recursos_procesos(ready,&mutex_lista_ready);
+    printf("-------------------------------------------------\n");
+    printf("Pocesos en READY PLUS \n");
+    imprimir_recursos_procesos(ready_plus,&mutex_lista_ready_plus);
+    printf("-------------------------------------------------\n");
+    printf("Poceso en EXECUTE \n");
+    imprimir_recursos_procesos(execute,&mutex_lista_exec);
+    printf("-------------------------------------------------\n");
+    printf("Pocesos en BLOCKED \n");
+    imprimir_recursos_procesos(blocked,&mutex_lista_blocked);
 }else{
     log_error(kernel_logger, "Comando no reconocido"); // Con la validación no debería llegar acá
     exit(EXIT_FAILURE);
@@ -245,4 +269,26 @@ void imprimir_comandos(){
     printf("INICIAR_PLANIFICACIÓN \n");
     printf("MULTIPROGRAMACIÓN       + [VALOR] \n");
     printf("PROCESO_ESTADO \n");
+}
+
+void imprimir_recursos_procesos(t_list* una_lista, pthread_mutex_t* un_mutex){
+    int tamanio = list_size(una_lista) - 1;
+    pcb* un_pcb = NULL;
+    pthread_mutex_lock(un_mutex);
+    while(tamanio >= 0){
+        un_pcb = list_get(una_lista,tamanio);
+        tamanio --;
+        int tamanio_lista_recursos = list_size(un_pcb->recursos_en_uso);
+        if(tamanio_lista_recursos>0){
+            printf("PID: %d ***********************************\n",un_pcb->pid);
+            for (int i = 0; i < tamanio_lista_recursos; i++)
+            {
+                instancia_recurso_pcb* un_recurso = list_get(un_pcb->recursos_en_uso,i);
+                printf("RECURSO: %s \n",un_recurso->nombre_recurso);
+                printf("Cantidad de instancias: %d \n",un_recurso->instancias_recurso);
+            }
+            printf("*******************************************\n");
+        }
+    }
+    pthread_mutex_unlock(un_mutex);
 }

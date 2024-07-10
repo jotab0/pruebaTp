@@ -120,9 +120,12 @@ void inicializar_mutexes(){
     while(INSTANCIAS_RECURSOS[contador] != NULL){
         
         instancia_recurso* un_recurso = malloc(sizeof(instancia_recurso));
-
-        un_recurso->nombre_recurso = RECURSOS[contador];
         
+
+        char* nombre = RECURSOS[contador];
+        un_recurso->nombre_recurso = malloc(strlen(nombre)+1);
+        
+        strcpy(un_recurso->nombre_recurso,nombre);
         sem_init(&un_recurso->semaforo_recurso,0,atoi(INSTANCIAS_RECURSOS[contador]));
         sem_init(&un_recurso->semaforo_request_recurso,0,0);
         pthread_mutex_init(&un_recurso->mutex_lista_procesos_en_cola, NULL);
@@ -130,10 +133,14 @@ void inicializar_mutexes(){
         un_recurso->lista_procesos_en_cola = list_create();
         
         list_add(lista_recursos,un_recurso);
+
+        instancia_recurso* recurso = list_get(lista_recursos,contador);
+        log_info(kernel_logger,"MÓDULO - inicializar_kernel: Se agregó recurso %s con %d instancias",recurso->nombre_recurso,atoi(INSTANCIAS_RECURSOS[contador]));
         
         contador += 1;
     }
-    log_trace(kernel_logger,"Recursos establecidos");
+    int tamanio = list_size(lista_recursos);
+    log_trace(kernel_logger,"Recursos establecidos: %d", tamanio);
  }
 
 void inicializar_planificadores(){

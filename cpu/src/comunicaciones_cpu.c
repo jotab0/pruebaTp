@@ -1,5 +1,7 @@
 #include "../include/comunicaciones_cpu.h"
 
+int proceso_actual;
+
 void iterator(char* value){
 	log_info(cpu_logger,"%s",value);
 }
@@ -113,8 +115,11 @@ void esperar_kernel_cpu_dispatch(){
 		case EJECUTAR_PROCESO_KCPU:
 
 			t_buffer* un_buffer = recibir_buffer(fd_kernel_dispatch);
+			pthread_mutex_lock(&mutex_proceso_actual);
 			int dato = extraer_int_del_buffer(un_buffer);
 			log_info(cpu_logger,"PID: %d",dato);
+			proceso_actual = dato;
+			pthread_mutex_unlock(&mutex_proceso_actual);
 			 dato = extraer_int_del_buffer(un_buffer);
 			log_info(cpu_logger,"PC: %d", dato);
 			 dato = extraer_int_del_buffer(un_buffer);
@@ -173,46 +178,15 @@ void esperar_memoria_cpu(){
 	}
 }
 
-void hilo_extra_funciones(){
-	log_trace(cpu_logger, "CPU lista para enviar instrucciones extra");
-	sleep(20);
-	t_paquete* un_paquete = crear_paquete_con_buffer(ATENDER_INSTRUCCION_CPU);
-	cargar_int_a_paquete(un_paquete, IO_GEN_SLEEP);
-	cargar_string_a_paquete(un_paquete, "una_interfaz");
-	cargar_int_a_paquete(un_paquete,5);
+void solicitar_recurso(char* un_recurso){
 
-	// Datos auxiliares
-	cargar_int_a_paquete(un_paquete,5);
+	t_paquete* un_paquete = crear_paquete_con_buffer(WAIT_KCPU);
+	cargar_string_a_paquete(un_paquete,un_recurso);
 
 	// Contexto pcb
-	cargar_int_a_paquete(un_paquete, 1); // Recordar que deben coincidir
-
-	cargar_int_a_paquete(un_paquete, 15);
-
-	cargar_int_a_paquete(un_paquete, 0);
-	cargar_int_a_paquete(un_paquete, 0);
-	cargar_int_a_paquete(un_paquete, 0);
-	cargar_int_a_paquete(un_paquete, 0);
-	cargar_int_a_paquete(un_paquete, 0);
-	cargar_int_a_paquete(un_paquete, 0);
-
-	cargar_int_a_paquete(un_paquete, 0);
-
-	enviar_paquete(un_paquete,fd_kernel_dispatch);
-	destruir_paquete(un_paquete);
-
-	sleep(2);
-	un_paquete = crear_paquete_con_buffer(ATENDER_INSTRUCCION_CPU);
-	cargar_int_a_paquete(un_paquete, IO_FS_TRUNCATE);
-	cargar_string_a_paquete(un_paquete, "una_interfaz");
-	cargar_int_a_paquete(un_paquete,5);
-
-	// Datos auxiliares
-	cargar_string_a_paquete(un_paquete,"Hola");
-	cargar_int_a_paquete(un_paquete,23);
-
-	// Contexto pcb
-	cargar_int_a_paquete(un_paquete, 2); // Recordar que deben coincidir
+	pthread_mutex_lock(&mutex_proceso_actual);
+	cargar_int_a_paquete(un_paquete, proceso_actual); 
+	pthread_mutex_unlock(&mutex_proceso_actual);
 
 	cargar_int_a_paquete(un_paquete, 15);
 
@@ -228,4 +202,50 @@ void hilo_extra_funciones(){
 	enviar_paquete(un_paquete,fd_kernel_dispatch);
 
 	destruir_paquete(un_paquete);
+
+}
+
+void solicitar_instruccion(instruccion_interfaz una_instruccion){
+	t_paquete* un_paquete = crear_paquete_con_buffer(ATENDER_INSTRUCCION_CPU);
+	cargar_int_a_paquete(un_paquete, una_instruccion);
+
+	cargar_string_a_paquete(un_paquete, "una_interfaz");
+	cargar_int_a_paquete(un_paquete,5);
+
+	// Datos auxiliares
+	cargar_int_a_paquete(un_paquete,5);
+
+	// Contexto pcb
+	cargar_int_a_paquete(un_paquete, proceso_actual); // Recordar que deben coincidir
+
+	cargar_int_a_paquete(un_paquete, 15);
+
+	cargar_int_a_paquete(un_paquete, 0);
+	cargar_int_a_paquete(un_paquete, 0);
+	cargar_int_a_paquete(un_paquete, 0);
+	cargar_int_a_paquete(un_paquete, 0);
+	cargar_int_a_paquete(un_paquete, 0);
+	cargar_int_a_paquete(un_paquete, 0);
+
+	cargar_int_a_paquete(un_paquete, 0);
+
+	enviar_paquete(un_paquete,fd_kernel_dispatch);
+	destruir_paquete(un_paquete);
+
+}
+
+void hilo_extra_funciones(){
+	
+	log_trace(cpu_logger, "CPU lista para enviar instrucciones extra");
+	sleep(20);
+	
+	solicitar_instruccion(IO_GEN_SLEEP);
+	sleep(15);
+
+	solicitar_recurso("RA");
+	sleep(2);
+
+	solicitar_recurso("RA");
+	sleep(2);
+
 }

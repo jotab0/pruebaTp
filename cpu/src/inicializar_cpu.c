@@ -5,6 +5,7 @@ void inicializar_cpu() {
     iniciar_logs();
     iniciar_config();
     imprimir_config();
+    pthread_mutex_init(&mutex_proceso_actual, NULL);
 }
 
 void iniciar_logs(){

@@ -8,7 +8,6 @@ void iniciar_logs();
 void iniciar_config();
 void imprimir_config();
 
-pthread_mutex_t mutex_proceso_actual;
 
 #endif 
 

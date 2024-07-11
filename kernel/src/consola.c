@@ -129,30 +129,11 @@ if(strcmp(comando_consola[0], "INICIAR_PROCESO") == 0){
 
     // [MULTIPROGRAMACIÓN] [VALOR]
     // Debe cambiar el grado de multiprogramación al VALOR indicado
-    int valor_solicitado = atoi(comando_consola[1]);
-    int diferencia;
+    int* valor_solicitado = malloc(sizeof(int));
+    *valor_solicitado = atoi(comando_consola[1]);
+    ejecutar_en_hilo_detach((void*)modificar_grado_multiprogramacion,valor_solicitado);
 
-    if(valor_solicitado>GRADO_MULTIPROGRAMACION){
-        diferencia = valor_solicitado - GRADO_MULTIPROGRAMACION;
-        while(diferencia > 0){
-            sem_post(&sem_multiprogramacion);
-            diferencia--;
-        }
-        GRADO_MULTIPROGRAMACION = valor_solicitado;
-        printf("El grado de multiprogramación se ha modificado a: %d",GRADO_MULTIPROGRAMACION);
-
-    }else if(valor_solicitado<GRADO_MULTIPROGRAMACION && valor_solicitado>0){
-        diferencia = GRADO_MULTIPROGRAMACION - valor_solicitado;
-        while(diferencia > 0){
-            sem_wait(&sem_multiprogramacion);
-            diferencia--;
-        }
-        GRADO_MULTIPROGRAMACION = valor_solicitado;
-        printf("El grado de multiprogramación se ha modificado a: %d",GRADO_MULTIPROGRAMACION);
-
-    }else{
-        printf("El grado de multiprogramación no se ha moidificado: %d",GRADO_MULTIPROGRAMACION);
-    }
+    
 }else if(strcmp(comando_consola[0], "PROCESO_ESTADO") == 0){
 
     // Debe listar por estado, todos los procesos en ese estado
@@ -292,4 +273,35 @@ void imprimir_recursos_procesos(t_list* una_lista, pthread_mutex_t* un_mutex){
         }
     }
     pthread_mutex_unlock(un_mutex);
+}
+
+void modificar_grado_multiprogramacion(int* valor_solicitado){
+
+    int diferencia;
+    // DEBERÍA AGREGAR ALGO PARA CHEQUEAR QUE SE ESTÁ CAMBIANDO GRADO DE MULTIPROGRAMACION
+    if(*valor_solicitado>GRADO_MULTIPROGRAMACION){
+
+        diferencia = *valor_solicitado - GRADO_MULTIPROGRAMACION;
+        while(diferencia > 0){
+            sem_post(&sem_multiprogramacion);
+            diferencia--;
+        }
+        GRADO_MULTIPROGRAMACION = *valor_solicitado;
+        printf("El grado de multiprogramación se ha modificado a: %d",GRADO_MULTIPROGRAMACION);
+
+    }else if(*valor_solicitado<GRADO_MULTIPROGRAMACION && *valor_solicitado>0){
+
+        diferencia = GRADO_MULTIPROGRAMACION - *valor_solicitado;
+        while(diferencia > 0){
+            sem_wait(&sem_multiprogramacion);
+            diferencia--;
+        }
+        GRADO_MULTIPROGRAMACION = *valor_solicitado;
+        printf("El grado de multiprogramación se ha modificado a: %d",GRADO_MULTIPROGRAMACION);
+
+    }else{
+        printf("El grado de multiprogramación no se ha moidificado: %d",GRADO_MULTIPROGRAMACION);
+    }
+
+    free(valor_solicitado);
 }

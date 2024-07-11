@@ -42,7 +42,7 @@ void control_request_de_recursos(instancia_recurso* un_recurso){
 		un_pcb = list_remove(un_recurso->lista_procesos_en_cola,0);
 		pthread_mutex_unlock(&un_recurso->mutex_lista_procesos_en_cola);
 
-		if(_eliminar_pcb_de_lista_sync(un_pcb,blocked,&mutex_lista_blocked)){
+		if(un_pcb != NULL && _eliminar_pcb_de_lista_sync(un_pcb,blocked,&mutex_lista_blocked)){
 			un_pcb->pedido_recurso = NULL;
 			agregar_recurso_a_pcb(un_pcb,un_recurso->nombre_recurso);
 			log_info(kernel_logger,"MÓDULO - manejo_recursos: Se entrego recurso %s a proceso con PID: %d", un_recurso->nombre_recurso, un_pcb->pid);

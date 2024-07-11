@@ -31,5 +31,7 @@ int fd_kernel_interrupt;
 int fd_memoria;
 
 
+pthread_mutex_t mutex_proceso_actual;
+
 
 #endif

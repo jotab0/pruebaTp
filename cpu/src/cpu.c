@@ -54,7 +54,7 @@ int main(void){
         return -3;
     }
     pthread_detach(hilo_mensajes);
-
+    
     pthread_t hilo_extra;
     err = pthread_create(&hilo_extra,NULL,(void*)hilo_extra_funciones,NULL);
     if (err!=0){

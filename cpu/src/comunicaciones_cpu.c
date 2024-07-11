@@ -196,6 +196,7 @@ void signal_recurso(char* un_recurso){
 }
 
 void solicitar_instruccion(instruccion_interfaz una_instruccion){
+
 	t_paquete* un_paquete = crear_paquete_con_buffer(ATENDER_INSTRUCCION_CPU);
 	cargar_int_a_paquete(un_paquete, una_instruccion);
 
@@ -225,7 +226,7 @@ void solicitar_instruccion(instruccion_interfaz una_instruccion){
 }
 
 void hilo_extra_funciones(){
-	
+	/*
 	log_trace(cpu_logger, "CPU lista para enviar instrucciones extra");
 	sleep(20);
 	
@@ -244,4 +245,5 @@ void hilo_extra_funciones(){
 	signal_recurso("RB");
 	sleep(2);
 	signal_recurso("RB");
+	*/
 }

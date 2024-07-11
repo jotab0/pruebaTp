@@ -47,42 +47,21 @@ void esperar_kernel_cpu_interrupt(){
 			pid = extraer_int_del_buffer(un_buffer);
 			log_info(cpu_logger,"Me llegó solicitud para interrumpir el proceso con PID: %d",pid);
 
-			if(pid == 2){
+			un_paquete = crear_paquete_con_buffer(QUANTUM_INTERRUPT);
 
-				log_info(cpu_logger,"Eliminando proceso con PID: %d",pid);
-				t_paquete* un_paquete = crear_paquete_con_buffer(EXIT_PROCESS);
+			cargar_int_a_paquete(un_paquete,pid);
+			cargar_int_a_paquete(un_paquete,2);
 
-				cargar_int_a_paquete(un_paquete,pid);
-				cargar_int_a_paquete(un_paquete,2);
+			cargar_int_a_paquete(un_paquete,3);
+			cargar_int_a_paquete(un_paquete,4);
+			cargar_int_a_paquete(un_paquete,5);
+			cargar_int_a_paquete(un_paquete,6);
+			cargar_int_a_paquete(un_paquete,7);
+			cargar_int_a_paquete(un_paquete,8);
 
-				cargar_int_a_paquete(un_paquete,3);
-				cargar_int_a_paquete(un_paquete,4);
-				cargar_int_a_paquete(un_paquete,5);
-				cargar_int_a_paquete(un_paquete,6);
-				cargar_int_a_paquete(un_paquete,7);
-				cargar_int_a_paquete(un_paquete,8);
+			cargar_int_a_paquete(un_paquete,0);
 
-				cargar_int_a_paquete(un_paquete,0);
-
-				enviar_paquete(un_paquete,fd_kernel_dispatch);
-
-			}else{
-				t_paquete* un_paquete = crear_paquete_con_buffer(QUANTUM_INTERRUPT);
-
-				cargar_int_a_paquete(un_paquete,pid);
-				cargar_int_a_paquete(un_paquete,2);
-
-				cargar_int_a_paquete(un_paquete,3);
-				cargar_int_a_paquete(un_paquete,4);
-				cargar_int_a_paquete(un_paquete,5);
-				cargar_int_a_paquete(un_paquete,6);
-				cargar_int_a_paquete(un_paquete,7);
-				cargar_int_a_paquete(un_paquete,8);
-
-				cargar_int_a_paquete(un_paquete,0);
-
-				enviar_paquete(un_paquete,fd_kernel_dispatch);
-			}
+			enviar_paquete(un_paquete,fd_kernel_dispatch);
 
 		break;
 
@@ -202,6 +181,17 @@ void solicitar_recurso(char* un_recurso){
 	enviar_paquete(un_paquete,fd_kernel_dispatch);
 
 	destruir_paquete(un_paquete);
+}
+
+void signal_recurso(char* un_recurso){
+
+	t_paquete* un_paquete = crear_paquete_con_buffer(SIGNAL_KCPU);
+	
+	cargar_string_a_paquete(un_paquete,un_recurso);
+
+	enviar_paquete(un_paquete,fd_kernel_dispatch);
+
+	destruir_paquete(un_paquete);
 
 }
 
@@ -240,12 +230,18 @@ void hilo_extra_funciones(){
 	sleep(20);
 	
 	solicitar_instruccion(IO_GEN_SLEEP);
-	sleep(15);
+	sleep(25);
 
-	solicitar_recurso("RA");
+	solicitar_recurso("RB");
 	sleep(2);
 
-	solicitar_recurso("RA");
+	solicitar_recurso("RB");
 	sleep(2);
 
+	solicitar_recurso("RB");
+	sleep(30);
+
+	signal_recurso("RB");
+	sleep(2);
+	signal_recurso("RB");
 }

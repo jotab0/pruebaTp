@@ -10,7 +10,7 @@ void iniciar_consola(){
     while(strcmp(leido, "\0") != 0){
         validacion_leido = validacion_de_instruccion_de_consola(leido);
         while(!validacion_leido){
-            log_error(kernel_logger, "Comando de consola no reconocido");
+            log_error(kernel_logger, "MÓDULO - consola: Comando de consola no reconocido");
             free(leido);
             leido = readline("> ");
             validacion_leido = validacion_de_instruccion_de_consola(leido);
@@ -68,8 +68,8 @@ if(strcmp(comando_consola[0], "INICIAR_PROCESO") == 0){
     list_add_pcb_sync(new,nuevo_pcb,&mutex_lista_new,NEW);
 	
 
-    log_info(kernel_logger,"Se ha creado proceso con PID: %d",nuevo_pcb->pid);
-    log_info(kernel_logger,"Se ha creado proceso con path: %s",nuevo_pcb->path);
+    log_info(kernel_logger,"MÓDULO - consola: Se ha creado proceso con PID: %d",nuevo_pcb->pid);
+    log_info(kernel_logger,"MÓDULO - consola: Se ha creado proceso con path: %s",nuevo_pcb->path);
     sem_post(&sem_lista_new);
 
 }else if(strcmp(comando_consola[0], "FINALIZAR_PROCESO") == 0){
@@ -77,7 +77,7 @@ if(strcmp(comando_consola[0], "INICIAR_PROCESO") == 0){
     // [FINALIZAR_PROCESO] [PID]
     // Debe liberar recursos, archivos y memoria
     int pid_buscado = atoi(comando_consola[1]);
-    log_info(kernel_logger,"Se solicitó eliminar proceso con PID: %d",pid_buscado);
+    log_info(kernel_logger,"MÓDULO - consola: Se solicitó eliminar proceso con PID: %d",pid_buscado);
     
     pcb* un_pcb = buscar_pcb_en_sistema_(pid_buscado);
 
@@ -269,6 +269,7 @@ void imprimir_comandos(){
     printf("INICIAR_PLANIFICACIÓN \n");
     printf("MULTIPROGRAMACIÓN       + [VALOR] \n");
     printf("PROCESO_ESTADO \n");
+    printf("LISTAR_PROCESOS\n");
 }
 
 void imprimir_recursos_procesos(t_list* una_lista, pthread_mutex_t* un_mutex){
@@ -280,7 +281,7 @@ void imprimir_recursos_procesos(t_list* una_lista, pthread_mutex_t* un_mutex){
         tamanio --;
         int tamanio_lista_recursos = list_size(un_pcb->recursos_en_uso);
         if(tamanio_lista_recursos>0){
-            printf("PID: %d ***********************************\n",un_pcb->pid);
+            printf("PID: %d ************************************\n",un_pcb->pid);
             for (int i = 0; i < tamanio_lista_recursos; i++)
             {
                 instancia_recurso_pcb* un_recurso = list_get(un_pcb->recursos_en_uso,i);

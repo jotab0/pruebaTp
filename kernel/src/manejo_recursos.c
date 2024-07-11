@@ -45,7 +45,7 @@ void control_request_de_recursos(instancia_recurso* un_recurso){
 		if(_eliminar_pcb_de_lista_sync(un_pcb,blocked,&mutex_lista_blocked)){
 			un_pcb->pedido_recurso = NULL;
 			agregar_recurso_a_pcb(un_pcb,un_recurso->nombre_recurso);
-			log_info(kernel_logger,"MÓDULO - manejo_recursos: Se entrego recurso %s inicializado a proceso con PID: %d", un_recurso->nombre_recurso, un_pcb->pid);
+			log_info(kernel_logger,"MÓDULO - manejo_recursos: Se entrego recurso %s a proceso con PID: %d", un_recurso->nombre_recurso, un_pcb->pid);
 			agregar_a_ready(un_pcb);
 			sem_post(&sem_pcp);
 		}
@@ -103,6 +103,7 @@ void manejar_signal_de_recurso(pcb *pcb_recibido){
 	if(list_any_satisfy(lista_recursos,(void *)_buscar_recurso)){
 		
 		un_recurso = list_find(lista_recursos,(void *)_buscar_recurso);
+		log_info(kernel_logger,"MÓDULO - manejo_recursos: Se ha hecho signal del recurso %s por proceso PID: %d", un_recurso->nombre_recurso, pcb_recibido->pid);
 		sem_post(&un_recurso->semaforo_recurso);
 
 	}else{
